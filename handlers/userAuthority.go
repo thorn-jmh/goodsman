@@ -15,7 +15,6 @@ import (
 )
 
 func GetUserAuth(c *gin.Context) {
-	//employeeID_midware()
 	resp := model.UserAuthResp{}
 	empID := c.Query("employee_id")
 	resp.Authority = c.GetInt("employee_auth")

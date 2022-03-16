@@ -2,6 +2,7 @@ package main
 
 import (
 	handler "goodsman/handlers"
+	"goodsman/midware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +10,7 @@ import (
 func initRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/ping", handler.Ping)
-	apiGroup := r.Group("/api")
+	apiGroup := r.Group("/api", midware.GetAuthInfo())
 	{
 		apiGroup.GET("/users/authority", handler.GetUserAuth)
 		apiGroup.GET("/goods/msg", handler.GetGoodsMsg)

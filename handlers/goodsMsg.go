@@ -12,7 +12,6 @@ import (
 )
 
 func GetGoodsMsg(c *gin.Context) {
-	// employeeID_midware()
 
 	goodsID := c.DefaultQuery("goods_id", "err")
 	if goodsID == "err" {
