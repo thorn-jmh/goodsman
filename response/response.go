@@ -20,6 +20,5 @@ func Success(c *gin.Context, data interface{}) {
 //An error happened,
 //You can add new errType in /response/define.go
 func Error(c *gin.Context, errType int) {
-
 	response(c, nil, httpStatus[errType], errType)
 }
