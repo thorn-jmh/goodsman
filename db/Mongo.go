@@ -11,7 +11,7 @@ import (
 )
 
 func initMongo(cfg config.DBcfg) (*mongo.Database, error) {
-	url := fmt.Sprintf("mongo://%s:%s@%s:%d",
+	url := fmt.Sprintf("mongodb://%s:%s@%s:%d",
 		cfg.User, cfg.Pwd, cfg.Host, cfg.Port)
 	clientoptions := options.Client().ApplyURI(url)
 	clientoptions.SetConnectTimeout(2 * time.Second)
