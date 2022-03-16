@@ -8,8 +8,8 @@ import (
 )
 
 type Mongodb struct {
-	Records *mongo.Collection
-	Goods   *mongo.Collection
+	RecordsColl *mongo.Collection
+	GoodsColl   *mongo.Collection
 }
 
 var (
@@ -22,8 +22,8 @@ func Init() {
 	if err != nil {
 		logrus.Fatal("failed to connect MongoDB & ", err.Error())
 	}
-	MongoDB.Goods = MongoClient.Collection("goods")
-	MongoDB.Records = MongoClient.Collection("records")
+	MongoDB.GoodsColl = MongoClient.Collection("goods")
+	MongoDB.RecordsColl = MongoClient.Collection("records")
 
 	logrus.Info("all databases connected")
 }

@@ -11,8 +11,8 @@ func initRouter() *gin.Engine {
 	r.GET("/ping", handler.Ping)
 	apiGroup := r.Group("/api")
 	{
-		apiGroup.GET("/users/authority")
-		apiGroup.GET("/goods/msg")
+		apiGroup.GET("/users/authority", handler.GetUserAuth)
+		apiGroup.GET("/goods/msg", handler.GetGoodsMsg)
 
 		apiGroup.POST("/goods/borrow", handler.BorrowGoods)
 		apiGroup.POST("/goods/new")
