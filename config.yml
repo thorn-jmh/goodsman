@@ -5,7 +5,7 @@ Base:
 Mongo: 
   User: "admin"
   Pwd: "123456"
-  Host: "localhost"
+  Host: "124.221.92.18"
   Port: 27017
   DBName: "goodsman"
 
