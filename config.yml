@@ -1,0 +1,11 @@
+Base:
+  RunMode: "debug"
+  HttpPort: 1926
+
+Mongo: 
+  User: "admin"
+  Pwd: "123456"
+  Host: "localhost"
+  Port: 27017
+  DBName: "goodsman"
+
