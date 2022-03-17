@@ -16,7 +16,7 @@ func initRouter() *gin.Engine {
 		apiGroup.GET("/goods/msg", handler.GetGoodsMsg)
 
 		apiGroup.POST("/goods/borrow", handler.BorrowGoods)
-		apiGroup.POST("/goods/new", handler.NewGoods)
+		apiGroup.POST("/goods/new", handler.AddNewGoods)
 		apiGroup.POST("/goods/state", handler.ChangeGoodsState)
 	}
 	return r

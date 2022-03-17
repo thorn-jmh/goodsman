@@ -12,3 +12,7 @@ type UserAuthResp struct {
 	Authority int     `json:"authority"`
 	Money     float64 `json:"money"`
 }
+
+type AddNewGoodsResp struct {
+	GoodsId string `json:"goods_uuid"`
+}
