@@ -37,3 +37,14 @@ func GetGoodsMsg(c *gin.Context) {
 	}
 	response.Success(c, resp)
 }
+
+func GoodsStockVerification(goodsId string, goodsNum int) (int, int, error) {
+	var goods model.Goods
+	ctx := context.TODO()
+	filter := bson.D{{"goods_id", goodsId}}
+	err := db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&goods)
+	if err != nil {
+		return -1, 0, err
+	}
+	return goods.State, goods.Number - goodsNum, nil
+}

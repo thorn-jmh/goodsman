@@ -7,6 +7,7 @@ var (
 	AUTH_ERROR     int = -1  //用户权限不足
 	PARAMS_ERROR   int = -11 //传入参数错误
 	DATABASE_ERROR int = 1   //数据库错误
+	STOCK_ERROR    int = 11  //物品供应不足
 )
 
 var msgFlags = map[int]string{
@@ -14,6 +15,7 @@ var msgFlags = map[int]string{
 	AUTH_ERROR:     "用户权限不足",
 	PARAMS_ERROR:   "传入参数错误",
 	DATABASE_ERROR: "数据库错误",
+	STOCK_ERROR:    "物品供应不足",
 }
 
 var httpStatus = map[int]int{

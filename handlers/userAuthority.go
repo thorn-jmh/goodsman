@@ -53,3 +53,25 @@ func GetUserAuth(c *gin.Context) {
 	}
 	response.Success(c, resp)
 }
+
+func BorrowingAuthVerification(c *gin.Context, goodsId string) (bool, error) {
+	employeeAuth := c.GetInt("employee_auth")
+
+	var goods model.Goods
+	ctx := context.TODO()
+	filter := bson.D{{"goods_id", goodsId}}
+	err := db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&goods)
+
+	if err != nil {
+		return false, err
+	}
+
+	goodsAuthority := goods.Goods_auth
+
+	if employeeAuth >= goodsAuthority {
+		return true, nil
+	} else {
+		return false, nil
+	}
+
+}
