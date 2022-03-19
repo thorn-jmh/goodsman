@@ -1,7 +1,7 @@
 package model
 
 type GetGoodsMsgResp struct {
-	Goods_auth int      `json:"goods_auth"`
+	Goods_auth int      `json:"goods_authority"`
 	Number     int      `json:"number"`
 	State      int      `json:"state"`
 	Owner      string   `json:"owner"`

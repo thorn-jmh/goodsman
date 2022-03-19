@@ -13,6 +13,7 @@ func GetAuthInfo() gin.HandlerFunc {
 		if empID == "nil" {
 			logrus.Error("params error: cant find employee_id")
 			response.Error(c, response.PARAMS_ERROR)
+			c.Abort()
 			return
 		}
 		//与飞书小程序交互
