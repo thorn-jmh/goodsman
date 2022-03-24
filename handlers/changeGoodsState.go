@@ -33,16 +33,15 @@ func ChangeGoodsState(c *gin.Context) {
 func UpdateChangeGoodsState(goodsId string, goodsState int, delNum int) error {
 	var goods model.Goods
 	ctx := context.TODO()
-	filter := bson.D{{"goods_id", goodsId}}
+	filter := bson.M{"goods_id": goodsId}
 	err := db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&goods)
 	if err != nil {
 		return err
 	}
 
-	// TODO: remove
 	ctx = context.TODO()
-	filter = bson.D{{"goods_id", goodsId}}
-	update := bson.M{"$set": bson.M{"Number": goods.Number + delNum, "State": goodsState}}
+	filter = bson.M{"goods_id": goodsId}
+	update := bson.M{"$set": bson.M{"number": goods.Number + delNum, "state": goodsState}}
 	updateResult, err := db.MongoDB.GoodsColl.UpdateOne(ctx, filter, update)
 
 	if err != nil {

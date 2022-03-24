@@ -12,6 +12,7 @@ func initRouter() *gin.Engine {
 	r.GET("/ping", handler.Ping)
 	apiGroup := r.Group("/api", midware.GetAuthInfo())
 	{
+		apiGroup.GET("/users/id", handler.GetUserId)
 		apiGroup.GET("/users/authority", handler.GetUserAuth)
 		apiGroup.GET("/goods/msg", handler.GetGoodsMsg)
 

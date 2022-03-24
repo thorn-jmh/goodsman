@@ -64,7 +64,7 @@ func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string) erro
 
 	var goods model.Goods
 	ctx := context.TODO()
-	filter := bson.D{{"goods_id", goodsId}}
+	filter := bson.M{"goods_id": goodsId}
 	err := db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&goods)
 	if err != nil {
 		return err
@@ -72,14 +72,15 @@ func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string) erro
 
 	// TODO: remove
 	ctx = context.TODO()
-	filter = bson.D{{"goods_id", goodsId}}
-	update := bson.M{"$set": bson.M{"Number": restGoodsNum}}
+	filter = bson.M{"goods_id": goodsId}
+	update := bson.M{"$set": bson.M{"number": restGoodsNum}}
 
 	if goods.Goods_msg.Consumables == 1 {
-		update = bson.M{"$set": bson.M{"Number": restGoodsNum}}
+		update = bson.M{"$set": bson.M{"number": restGoodsNum}}
 	} else if goods.Goods_msg.Consumables == 0 {
-		update = bson.M{"$set": bson.M{"Number": 0, "Owner": employeeId, "State": 0}}
+		update = bson.M{"$set": bson.M{"number": 0, "owner": employeeId, "state": 0}}
 	}
+
 	updateResult, err := db.MongoDB.GoodsColl.UpdateOne(ctx, filter, update)
 	if err != nil {
 		return err
