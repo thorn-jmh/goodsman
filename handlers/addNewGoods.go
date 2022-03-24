@@ -14,7 +14,8 @@ import (
 func AddNewGoods(c *gin.Context) {
 	var req model.AddNewGoodsRequest
 
-	if err := c.BindJSON(&req); err != nil {
+	//TODO: Auth Check?
+	if err := c.Bind(&req); err != nil {
 		logrus.Error(err)
 		response.Error(c, response.PARAMS_ERROR)
 		return

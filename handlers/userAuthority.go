@@ -11,8 +11,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 )
+
+var MAX_MONEY = 100.0
 
 func GetUserAuth(c *gin.Context) {
 	resp := model.UserAuthResp{}
@@ -24,10 +25,8 @@ func GetUserAuth(c *gin.Context) {
 		fmt.Sprintf("%d-%02d-%02d 00:00:00", year, month, day))
 
 	ctx := context.TODO()
-	matchState1 := bson.D{{"$match", bson.D{{"date", bson.D{{"$gte", date.Unix()}}}}}}
-	matchState2 := bson.D{{"$match", bson.D{{"employee_id", empID}}}}
-	matchState3 := bson.D{{"$match", bson.D{{"state", 0}}}}
-	cursor, err := db.MongoDB.RecordsColl.Aggregate(ctx, mongo.Pipeline{matchState1, matchState2, matchState3})
+	matchState := bson.D{{"employee_id", empID}, {"state", 0}, {"date", bson.D{{"$gte", date.Unix()}}}}
+	cursor, err := db.MongoDB.RecordsColl.Find(ctx, matchState)
 	if err != nil {
 		logrus.Error("error happened in aggregation & ", err.Error())
 		response.Error(c, response.DATABASE_ERROR)
@@ -51,5 +50,6 @@ func GetUserAuth(c *gin.Context) {
 		}
 		resp.Money += goods.Goods_msg.Cost
 	}
+	resp.Money = float64(MAX_MONEY) - resp.Money
 	response.Success(c, resp)
 }

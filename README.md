@@ -16,7 +16,21 @@ Logger: logrus
 
 ### 项目配置
 
-请在`./config.yml`中设置服务端口、数据库地址等
+请在主目录下添加`config.yml`文件，并在其中按如下设置：
+
+```yaml
+Base:
+  RunMode: "debug"
+  HttpPort: 1926
+
+Mongo: 
+  User: "user"
+  Pwd: "password"
+  Host: "host"
+  Port: 27017
+  DBName: "goodsman"
+
+```
 
 然后在目录下运行`go run ./`启动服务
 

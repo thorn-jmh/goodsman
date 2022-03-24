@@ -9,7 +9,7 @@ import (
 
 func GetAuthInfo() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		empID := c.DefaultQuery("employee_id", "nil")
+		//TODO:
 		if empID == "nil" {
 			logrus.Error("params error: cant find employee_id")
 			response.Error(c, response.PARAMS_ERROR)
