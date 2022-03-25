@@ -15,6 +15,8 @@ RUN cd $WORKDIR && go build -o /goodsman
 
 FROM alpine:3.15.2
 
+COPY ./config.yml / 
+
 COPY --from=builder /goodsman /goodsman
 
 CMD ["/goodsman"]
