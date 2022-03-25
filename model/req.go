@@ -34,5 +34,5 @@ type ReturnAllGoodsRequest struct {
 type ReturnGoodsRequest struct {
 	EmployeeId string `form:"employee_id" json:"employee_id" binding:"required"`
 	GoodsId    string `form:"goods_id" json:"goods_id" binding:"required"`
-	DelNum     int    `bson:"number" json:"Number"` // 变化数量
+	DelNum     int    `bson:"number" json:"number"` // 变化数量
 }
