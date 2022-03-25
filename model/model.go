@@ -22,4 +22,5 @@ type Records struct {
 	Goods_id    string `bson:"goods_id"`
 	Date        int64  `bson:"date"`
 	State       int    `bson:"state"`
+	Del_num     int    `bson:"del_number"`
 }

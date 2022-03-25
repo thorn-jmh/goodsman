@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -50,7 +51,8 @@ func BorrowGoods(c *gin.Context) {
 		return
 	}
 
-	err = UpdateBorrowGoods(req.GoodsId, restGoodsNum, req.EmployeeId)
+	// TODO: remove delnum or restnum
+	err = UpdateBorrowGoods(req.GoodsId, restGoodsNum, req.EmployeeId, -req.GoodsNum)
 	if err != nil {
 		logrus.Error("error happened in database & ", err.Error())
 		response.Error(c, response.DATABASE_ERROR)
@@ -60,7 +62,7 @@ func BorrowGoods(c *gin.Context) {
 	response.Success(c, response.SUCCESS)
 }
 
-func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string) error {
+func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string, delNum int) error {
 
 	var goods model.Goods
 	ctx := context.TODO()
@@ -70,9 +72,8 @@ func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string) erro
 		return err
 	}
 
-	// TODO: remove
-	ctx = context.TODO()
-	filter = bson.M{"goods_id": goodsId}
+	ctx = context.TODO()                 // TODO: maybe can be removed
+	filter = bson.M{"goods_id": goodsId} // TODO: maybe can be removed
 	update := bson.M{"$set": bson.M{"number": restGoodsNum}}
 
 	if goods.Goods_msg.Consumables == 1 {
@@ -85,6 +86,39 @@ func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string) erro
 	if err != nil {
 		return err
 	}
+
+	record := &model.Records{
+		Employee_id: employeeId,
+		Goods_id:    goodsId,
+		Date:        time.Now().Unix(),
+		State:       0,
+		Del_num:     delNum, // It should be negative
+	}
+	borrowRecord, err := db.MongoDB.RecordsColl.InsertOne(ctx, record)
+
 	logrus.Info(updateResult)
+	logrus.Info(borrowRecord)
 	return nil
+}
+
+func BorrowingAuthVerification(c *gin.Context, goodsId string) (bool, error) {
+	employeeAuth := c.GetInt("employee_auth")
+
+	var goods model.Goods
+	ctx := context.TODO()
+	filter := bson.D{{"goods_id", goodsId}}
+	err := db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&goods)
+
+	if err != nil {
+		return false, err
+	}
+
+	goodsAuthority := goods.Goods_auth
+
+	if employeeAuth >= goodsAuthority {
+		return true, nil
+	} else {
+		return false, nil
+	}
+
 }

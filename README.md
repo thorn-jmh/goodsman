@@ -30,7 +30,8 @@ records:
   employee_id: string
   goods_id:    string
   date:		   int64          #记录更新时间
-  state:	   int            #记录状态 
+  state:	   int            #记录状态
+  del_number:  int            #变化数量（区分正负）
 index{date : -1}    #0：借出，1：归还，2：入库，3：出库
   
 goods:

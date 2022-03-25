@@ -25,3 +25,14 @@ type AddNewGoodsRequest struct {
 	Owner      string   `form:"owner" json:"owner" default:"Null"`
 	GoodsMsg   Goodsmsg `form:"goods_msg" json:"goods_msg" binding:"required"`
 }
+
+type ReturnAllGoodsRequest struct {
+	EmployeeId string `form:"employee_id" json:"employee_id" binding:"required"`
+	GoodsId    string `form:"goods_id" json:"goods_id" binding:"required"`
+}
+
+type ReturnGoodsRequest struct {
+	EmployeeId string `form:"employee_id" json:"employee_id" binding:"required"`
+	GoodsId    string `form:"goods_id" json:"goods_id" binding:"required"`
+	DelNum     int    `bson:"number" json:"Number"` // 变化数量
+}
