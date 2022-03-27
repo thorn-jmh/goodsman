@@ -39,13 +39,19 @@ func GetUserId(c *gin.Context) {
 		return
 	}
 
-	getIDresp := model.GetUserIDResp{}
-	if err = json.Unmarshal(resp, &getIDresp); err != nil {
+	fsGetIDresp := model.FSUserIDResp{}
+	if err = json.Unmarshal(resp, &fsGetIDresp); err != nil {
 		logrus.Error("failed to unmarshal feishu response body & ", err.Error())
 		response.Error(c, response.FEISHU_ERROR)
 		return
 	}
 
+	getIDresp := model.GetUserIDResp{
+		EmployeeID:   fsGetIDresp.Data.EmployeeID,
+		AccessToken:  fsGetIDresp.Data.AccessToken,
+		ExpiresIn:    fsGetIDresp.Data.ExpiresIn,
+		RefreshToken: fsGetIDresp.Data.RefreshToken,
+	}
 	response.Success(c, getIDresp)
 
 }

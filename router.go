@@ -24,7 +24,7 @@ func initRouter() *gin.Engine {
 	}
 	eventGroup := r.Group("/event")
 	{
-		eventGroup.POST("/received/msg")
+		eventGroup.POST("/received/msg", handler.ReplyCheck)
 	}
 	return r
 }

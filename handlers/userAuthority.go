@@ -34,19 +34,17 @@ func queryAuth(empID string) (int, error) {
 	if err != nil {
 		return -1, err
 	}
-	result := struct {
-		Emp_type int `json:"employee_type"`
-	}{}
+	result := model.FSUserAuth{}
 	err = json.Unmarshal(body, &result)
 	if err != nil {
 		return -1, err
 	}
 
-	result.Emp_type = 2 - result.Emp_type
-	if result.Emp_type != 0 && result.Emp_type != 1 {
+	emp_type := 2 - result.Data.User.EmpType
+	if emp_type != 0 && emp_type != 1 {
 		return -1, errors.New("cant find this employee in feishu")
 	}
-	return result.Emp_type, nil
+	return emp_type, nil
 }
 
 func GetUserAuth(c *gin.Context) {
@@ -67,7 +65,7 @@ func GetUserAuth(c *gin.Context) {
 	matchState := bson.D{{"employee_id", empID}, {"state", 0}, {"date", bson.D{{"$gte", date.Unix()}}}}
 	cursor, err := db.MongoDB.RecordsColl.Find(ctx, matchState)
 	if err != nil {
-		logrus.Error("error happened in aggregation & ", err.Error())
+		logrus.Error("error happened in database & ", err.Error())
 		response.Error(c, response.DATABASE_ERROR)
 		return
 	}

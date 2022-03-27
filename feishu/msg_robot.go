@@ -8,12 +8,12 @@ import (
 )
 
 //https://open.feishu.cn/open-apis/im/v1/messages
-func SendMessage(empID string, msg_type string, content *MsgContent) error {
+func SendMessage(empID string, msg_type string, content MsgContent) error {
 	url := "https://open.feishu.cn/open-apis/im/v1/messages" + "?receive_id_type=user_id"
 	msg := struct {
-		EmpID    string      `json:"receive_id"`
-		Content  *MsgContent `json:"content"`
-		Msg_type string      `json:"msg_type"`
+		EmpID    string     `json:"receive_id"`
+		Content  MsgContent `json:"content"`
+		Msg_type string     `json:"msg_type"`
 	}{
 		EmpID:    empID,
 		Content:  content,
@@ -46,18 +46,17 @@ type MsgContent interface {
 }
 
 type TextMsg struct {
-	content string
+	Content string
 }
 
 func (slf *TextMsg) NewMsg(messages ...interface{}) interface{} {
+	items, _ := messages[0].([]string)
 	message := "{\"text\":\" "
-	for i, item := range messages {
-		message = message + item.(string) + " \\n "
+	for i, item := range items {
+		message = message + item + " \\n "
 		if i == len(messages)-1 {
-			message = message + item.(string) + " \"}"
+			message = message + item + " \"}"
 		}
 	}
-	return TextMsg{
-		content: message,
-	}
+	return message
 }
