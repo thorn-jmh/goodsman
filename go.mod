@@ -9,7 +9,10 @@ require (
 	go.mongodb.org/mongo-driver v1.8.4
 )
 
-require github.com/gofrs/uuid v4.2.0+incompatible
+require (
+	github.com/gofrs/uuid v4.2.0+incompatible
+	github.com/patrickmn/go-cache v2.1.0+incompatible
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
@@ -30,7 +33,6 @@ require (
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/afero v1.6.0 // indirect

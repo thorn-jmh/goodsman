@@ -21,8 +21,9 @@ func ReturnAllGoods(c *gin.Context) {
 	}
 
 	records, err := getRecordsByEmpIdAndGoodsId(req.EmployeeId, req.GoodsId)
+	record := records[0]
 
-	err = UpdateChangeGoodsState(req.GoodsId, 1, -records.Del_num)
+	err = UpdateChangeGoodsState(req.GoodsId, 1, -record.Del_num)
 	if err != nil {
 		logrus.Error("error happened in database & ", err.Error())
 		response.Error(c, response.DATABASE_ERROR)
@@ -36,7 +37,7 @@ func ReturnAllGoods(c *gin.Context) {
 		Goods_id:    req.GoodsId,
 		Date:        time.Now().Unix(),
 		State:       1,
-		Del_num:     -records.Del_num, // It should be positive
+		Del_num:     -record.Del_num, // It should be positive
 	}
 	returnRecord, err := db.MongoDB.RecordsColl.InsertOne(ctx, newRecord)
 	_ = returnRecord

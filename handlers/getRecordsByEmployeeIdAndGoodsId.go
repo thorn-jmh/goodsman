@@ -35,10 +35,12 @@ func GetRecordsByEmployeeIdAndGoodsId(c *gin.Context) {
 	response.Success(c, records)
 }
 
-func getRecordsByEmpIdAndGoodsId(empID string, goodsID string) (model.Records, error) {
-	var records model.Records
+func getRecordsByEmpIdAndGoodsId(empID string, goodsID string) ([]model.Records, error) {
+	var records []model.Records
 	ctx := context.TODO()
 	filter := bson.D{{"employee_id", empID}, {"goods_id", goodsID}}
-	err := db.MongoDB.RecordsColl.FindOne(ctx, filter).Decode(&records)
+	cursor, err := db.MongoDB.RecordsColl.Find(ctx, filter)
+	cursor.All(ctx, &records)
+
 	return records, err
 }

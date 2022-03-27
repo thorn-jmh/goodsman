@@ -6,6 +6,14 @@ curl -X GET "http://{url}:1926/ping"
 
 curl -X GET "http://{url}:1926/api/users/records/goods_id?employee_id=123456&goods_id=<goods_id>"
 
+# /api/goods/msg
+
+curl -X GET "http://{url}:1926/api/goods/msg?employee_id=123456&goods_id=<goods_id>"
+
+# /users/records/goods_id
+
+curl -X GET "http://{url}:1926/api/users/records/goods_id?employee_id=123456&goods_id=<goods_id>"
+
 # /api/goods/new
 
 curl -X POST "http://{url}:1926/api/goods/new" -H "Content-Type: application/json" --data '{
@@ -37,11 +45,22 @@ curl -X POST "http://{url}:1926/api/goods/state" -H "Content-Type: application/j
 # /api/goods/borrow
 
 curl -X POST "http://{url}:1926/api/goods/borrow" -H "Content-Type: application/json" --data '{
-    "employee_id": "123456",
-    "goods_id" :"<goods_id>",
+    "employee_id" : "123456",
+    "goods_id" : "<goods_id>",
     "goods_num" : 1
 }'
 
-# /api/goods/msg
+# /users/return_goods
 
-curl -X GET "http://{url}:1926/api/goods/msg?employee_id=123456&goods_id=<goods_id>"
+curl -X POST "http://{url}:1926/api/users/return_goods" -H "Content-Type: application/json" --data '{
+    "employee_id" : "123456",
+    "goods_id" : "<goods_id>",
+    "number" : 1
+}'
+
+# /users/return_goods/all
+
+curl -X POST "http://{url}:1926/api/users/return_goods/all" -H "Content-Type: application/json" --data '{
+    "employee_id" : "123456",
+    "goods_id" : "<goods_id>"
+}'
