@@ -2,7 +2,9 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"goodsman/db"
+	"goodsman/feishu"
 	"goodsman/model"
 	"goodsman/response"
 
@@ -43,10 +45,37 @@ func UpdateChangeGoodsState(goodsId string, goodsState int, delNum int) error {
 	filter = bson.M{"goods_id": goodsId}
 	update := bson.M{"$set": bson.M{"number": goods.Number + delNum, "state": goodsState}}
 	updateResult, err := db.MongoDB.GoodsColl.UpdateOne(ctx, filter, update)
-
 	if err != nil {
 		return err
 	}
 	logrus.Info(updateResult)
+
+	rec := model.Goods{}
+	db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&rec)
+	rec.Number = delNum
+	if err = changeNotify(&rec); err != nil {
+		logrus.Error("failed to send notification & ", err.Error())
+	}
+
+	return nil
+}
+
+//变更物品提醒
+func changeNotify(newgoods *model.Goods) error {
+	userID := ManagerID
+	messages := make([]string, 0)
+	messages = append(messages, "物品变更提醒:")
+	messages = append(messages,
+		fmt.Sprintf("Name: %s Type: %s", newgoods.Goods_msg.Name, newgoods.Goods_msg.Type))
+	messages = append(messages,
+		fmt.Sprintf("ChangeNum: %d State: %d", newgoods.Number, newgoods.State))
+
+	formMsg := &feishu.TextMsg{}
+	formMsg.Content = formMsg.NewMsg(messages).(string)
+	err := feishu.SendMessage(userID, "text", formMsg)
+	if err != nil {
+		return err
+	}
+	logrus.Info("Notification has been sent to manager")
 	return nil
 }

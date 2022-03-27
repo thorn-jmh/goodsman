@@ -3,6 +3,8 @@
 package feishu
 
 import (
+	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -45,6 +47,17 @@ func (client *FeishuClient) Do(req *http.Request, accessToken ...string) ([]byte
 
 	if response.StatusCode != http.StatusOK {
 		logrus.Error("response status: %d", response.StatusCode)
+	}
+
+	result := struct {
+		Code int    `json:"code"`
+		Msg  string `json:"msg"`
+	}{}
+	err = json.Unmarshal(resp, &result)
+	if err == nil {
+		if result.Code != 0 {
+			return nil, errors.New(result.Msg)
+		}
 	}
 
 	return resp, nil

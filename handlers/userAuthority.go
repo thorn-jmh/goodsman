@@ -19,7 +19,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-var MAX_MONEY = config.App.MAX_MONEY
+var MAX_MONEY = config.App.MaxMoney
 
 //https://open.feishu.cn/open-apis/contact/v3/users/:user_id
 func queryAuth(empID string) (int, error) {

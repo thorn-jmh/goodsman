@@ -9,9 +9,8 @@ import (
 	"net/http"
 )
 
-//若要新增消息类型,请新建结构体
+//若要新增消息类型,请新建结构体，
 //然后为其实现 NewMsg
-
 //https://open.feishu.cn/open-apis/im/v1/messages
 func SendMessage(empID string, msg_type string, content MsgContent) error {
 	url := "https://open.feishu.cn/open-apis/im/v1/messages" + "?receive_id_type=user_id"
@@ -46,14 +45,18 @@ func SendMessage(empID string, msg_type string, content MsgContent) error {
 	return nil
 }
 
+//消息接口
 type MsgContent interface {
 	NewMsg(messages ...interface{}) interface{}
 }
 
+//文本格式消息
 type TextMsg struct {
 	Content string
 }
 
+//传入参数应为 []string，
+//将数组内元素分行输出
 func (slf *TextMsg) NewMsg(messages ...interface{}) interface{} {
 	items, _ := messages[0].([]string)
 	message := "{\"text\":\" "

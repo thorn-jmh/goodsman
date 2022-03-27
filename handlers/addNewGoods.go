@@ -56,7 +56,7 @@ func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 	}
 	logrus.Info(createResult)
 
-	if err = Notify(newGoods); err != nil {
+	if err = newNotify(newGoods); err != nil {
 		logrus.Error("failed to send notification & ", err.Error())
 	}
 
@@ -64,7 +64,7 @@ func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 }
 
 //新增物品提醒
-func Notify(newgoods *model.Goods) error {
+func newNotify(newgoods *model.Goods) error {
 	userID := ManagerID
 	messages := make([]string, 0)
 	messages = append(messages, "新增物品提醒:")

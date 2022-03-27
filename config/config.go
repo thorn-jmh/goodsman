@@ -24,4 +24,5 @@ func InitConfig() {
 	Base = cfg.Base
 	Mongo = cfg.Mongo
 	App = cfg.App
+	App.KeyWord = "借用物品"
 }
