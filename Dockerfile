@@ -19,4 +19,6 @@ COPY ./config.yml /
 
 COPY --from=builder /goodsman /goodsman
 
+EXPOSE 1926
+
 CMD ["/goodsman"]
