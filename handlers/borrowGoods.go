@@ -72,8 +72,6 @@ func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string, delN
 		return err
 	}
 
-	ctx = context.TODO()                 // TODO: maybe can be removed
-	filter = bson.M{"goods_id": goodsId} // TODO: maybe can be removed
 	update := bson.M{"$set": bson.M{"number": restGoodsNum}}
 
 	if goods.Goods_msg.Consumables == 1 {

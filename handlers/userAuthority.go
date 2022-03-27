@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"goodsman/config"
 	"goodsman/db"
 	"goodsman/feishu"
 	"goodsman/model"
@@ -18,7 +19,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-var MAX_MONEY = 100.0
+var MAX_MONEY = config.App.MAX_MONEY
 
 //https://open.feishu.cn/open-apis/contact/v3/users/:user_id
 func queryAuth(empID string) (int, error) {
@@ -61,7 +62,7 @@ func GetUserAuth(c *gin.Context) {
 		fmt.Sprintf("%d-%02d-%02d 00:00:00", year, month, day))
 
 	ctx := context.TODO()
-	//FIXME: 时区好像不太对？还没验证
+	//FIXME: 时区好像不太对？但是我觉得在一台服务器上跑应该是没问题?
 	matchState := bson.D{{"employee_id", empID}, {"state", 0}, {"date", bson.D{{"$gte", date.Unix()}}}}
 	cursor, err := db.MongoDB.RecordsColl.Find(ctx, matchState)
 	if err != nil {

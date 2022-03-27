@@ -1,8 +1,5 @@
 package model
 
-//
-//
-//
 //接受飞书请求的结构体,会巨丑无比
 type CommonEvent struct {
 	Header struct {

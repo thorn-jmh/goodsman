@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"goodsman/config"
 	"goodsman/db"
 	"goodsman/feishu"
 	"goodsman/model"
@@ -16,7 +17,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-var KeyWord = "借用物品"
+var KeyWord = config.App.KeyWord
 
 func ReplyCheck(c *gin.Context) {
 	eventreq := model.CommonEvent{}

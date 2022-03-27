@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"fmt"
+	"goodsman/config"
 	"goodsman/db"
 	"goodsman/feishu"
 	"goodsman/model"
@@ -13,12 +14,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var ManagerID = "3210100000" //FIXME:
+var ManagerID = config.App.ManagerID
 
 func AddNewGoods(c *gin.Context) {
 	var req model.AddNewGoodsRequest
 
-	//TODO: Auth Check?
 	if err := c.Bind(&req); err != nil {
 		logrus.Error(err)
 		response.Error(c, response.PARAMS_ERROR)
@@ -63,6 +63,7 @@ func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 	return newUID, nil
 }
 
+//新增物品提醒
 func Notify(newgoods *model.Goods) error {
 	userID := ManagerID
 	messages := make([]string, 0)
