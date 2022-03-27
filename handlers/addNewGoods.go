@@ -2,7 +2,9 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"goodsman/db"
+	"goodsman/feishu"
 	"goodsman/model"
 	"goodsman/response"
 	"goodsman/utils"
@@ -11,10 +13,13 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var ManagerID = "3210100000" //FIXME:
+
 func AddNewGoods(c *gin.Context) {
 	var req model.AddNewGoodsRequest
 
-	if err := c.BindJSON(&req); err != nil {
+	//TODO: Auth Check?
+	if err := c.Bind(&req); err != nil {
 		logrus.Error(err)
 		response.Error(c, response.PARAMS_ERROR)
 		return
@@ -50,5 +55,29 @@ func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 		return newUID, err
 	}
 	logrus.Info(createResult)
+
+	if err = Notify(newGoods); err != nil {
+		logrus.Error("failed to send notification & ", err.Error())
+	}
+
 	return newUID, nil
+}
+
+func Notify(newgoods *model.Goods) error {
+	userID := ManagerID
+	messages := make([]string, 0)
+	messages = append(messages, "新增物品提醒:")
+	messages = append(messages,
+		fmt.Sprintf("Name: %s Type: %s", newgoods.Goods_msg.Name, newgoods.Goods_msg.Type))
+	messages = append(messages,
+		fmt.Sprintf("Num: %d Auth: %d", newgoods.Number, newgoods.Goods_auth))
+
+	formMsg := &feishu.TextMsg{}
+	formMsg.Content = formMsg.NewMsg(messages).(string)
+	err := feishu.SendMessage(userID, "text", formMsg)
+	if err != nil {
+		return err
+	}
+	logrus.Info("Notification has been sent to manager")
+	return nil
 }

@@ -22,5 +22,9 @@ func initRouter() *gin.Engine {
 		apiGroup.POST("/users/return_goods", handler.ReturnGoods)
 		apiGroup.POST("/users/return_goods/all", handler.ReturnAllGoods)
 	}
+	eventGroup := r.Group("/event")
+	{
+		eventGroup.POST("/received/msg", handler.ReplyCheck)
+	}
 	return r
 }

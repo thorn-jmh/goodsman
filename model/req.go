@@ -36,3 +36,7 @@ type ReturnGoodsRequest struct {
 	GoodsId    string `form:"goods_id" json:"goods_id" binding:"required"`
 	DelNum     int    `bson:"number" json:"number"` // 变化数量
 }
+
+type GetUserIDRequest struct {
+	Code string `json:"code" binding:"required"`
+}
