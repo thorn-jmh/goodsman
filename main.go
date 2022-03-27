@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goodsman/config"
 	"goodsman/db"
+	"goodsman/feishu"
 	"net/http"
 	"path/filepath"
 	"time"
@@ -28,13 +29,14 @@ func main() {
 	logrus.SetFormatter(&LogFormatter{})
 	config.InitConfig()
 	db.Init()
+	feishu.Init()
 
 	r := initRouter()
 	s := &http.Server{
 		Addr:           fmt.Sprintf(":%d", config.Base.HttpPort),
 		Handler:        r,
-		ReadTimeout:    200 * time.Millisecond,
-		WriteTimeout:   200 * time.Millisecond,
+		ReadTimeout:    2 * time.Second,
+		WriteTimeout:   2 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 	s.ListenAndServe()

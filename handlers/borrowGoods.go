@@ -22,7 +22,7 @@ func BorrowGoods(c *gin.Context) {
 		return
 	}
 
-	approved, err := BorrowingAuthVerification(c, req.GoodsId)
+	approved, err := BorrowingAuthVerification(c, req.EmployeeId, req.GoodsId)
 	if err != nil {
 		logrus.Error("error happened in database & ", err.Error())
 		response.Error(c, response.DATABASE_ERROR)
@@ -101,13 +101,16 @@ func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string, delN
 	return nil
 }
 
-func BorrowingAuthVerification(c *gin.Context, goodsId string) (bool, error) {
-	employeeAuth := c.GetInt("employee_auth")
+func BorrowingAuthVerification(c *gin.Context, empId, goodsId string) (bool, error) {
+	employeeAuth, err := queryAuth(empId)
+	if err != nil {
+		return false, err
+	}
 
 	var goods model.Goods
 	ctx := context.TODO()
 	filter := bson.D{{"goods_id", goodsId}}
-	err := db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&goods)
+	err = db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&goods)
 
 	if err != nil {
 		return false, err

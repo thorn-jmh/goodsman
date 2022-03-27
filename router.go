@@ -9,7 +9,7 @@ import (
 func initRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/ping", handler.Ping)
-	apiGroup := r.Group("/api" /*, midware.GetAuthInfo()*/)
+	apiGroup := r.Group("/api")
 	{
 		apiGroup.GET("/users/id", handler.GetUserId)
 		apiGroup.GET("/users/authority", handler.GetUserAuth)
@@ -21,6 +21,10 @@ func initRouter() *gin.Engine {
 		apiGroup.POST("/goods/state", handler.ChangeGoodsState)
 		apiGroup.POST("/users/return_goods", handler.ReturnGoods)
 		apiGroup.POST("/users/return_goods/all", handler.ReturnAllGoods)
+	}
+	eventGroup := r.Group("/event")
+	{
+		eventGroup.POST("/received/msg")
 	}
 	return r
 }

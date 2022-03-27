@@ -16,3 +16,10 @@ type UserAuthResp struct {
 type AddNewGoodsResp struct {
 	GoodsId string `json:"goods_uuid"`
 }
+
+type GetUserIDResp struct {
+	Employee_id   string `json:"employee_id"`
+	Access_token  string `json:"access_token"`
+	Expires_in    int64  `json:"expires_in"`
+	Refresh_token string `json:"refresh_token"`
+}

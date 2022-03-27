@@ -3,6 +3,9 @@ package config
 type Basecfg struct {
 	RunMode  string
 	HttpPort int
+
+	AppID     string
+	AppSecret string
 }
 
 type DBcfg struct {
