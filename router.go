@@ -9,7 +9,7 @@ import (
 func initRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/ping", handler.Ping)
-	apiGroup := r.Group("/api" /*, midware.GetAuthInfo()*/)
+	apiGroup := r.Group("/api")
 	{
 		apiGroup.GET("/users/id", handler.GetUserId)
 		apiGroup.GET("/users/authority", handler.GetUserAuth)
