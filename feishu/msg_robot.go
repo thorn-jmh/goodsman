@@ -1,3 +1,5 @@
+//消息发送器
+
 package feishu
 
 import (
@@ -6,6 +8,9 @@ import (
 	"errors"
 	"net/http"
 )
+
+//若要新增消息类型,请新建结构体
+//然后为其实现 NewMsg
 
 //https://open.feishu.cn/open-apis/im/v1/messages
 func SendMessage(empID string, msg_type string, content MsgContent) error {

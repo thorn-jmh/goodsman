@@ -5,16 +5,15 @@ import "goodsman/config"
 var (
 	TenantTokenManager *CommonAccessTokenManager
 	AppTokenManager    *CommonAccessTokenManager
+	CommonClient       *FeishuClient
 
-	CommonClient *FeishuClient
+	AppID     string
+	AppSecret string
 
-	AppID           string
-	AppSecret       string
 	TokenExpireTime = 110
 	Content_Type    = "application/json; charset=utf-8"
-
-	ReplyEvent = "im.message.receive_v1"
-	HelloEvent = "event_callback"
+	ReplyEvent      = "im.message.receive_v1"
+	HelloEvent      = "event_callback"
 )
 
 var (
@@ -23,8 +22,8 @@ var (
 )
 
 func Init() {
-	AppID = config.Base.AppID
-	AppSecret = config.Base.AppSecret
+	AppID = config.App.AppID
+	AppSecret = config.App.AppSecret
 	TenantTokenManager = DefaultAccessTokenManager("tenant", getTenantAccessTokenUrl)
 	AppTokenManager = DefaultAccessTokenManager("app", getAppAccessTokenUrl)
 	CommonClient = NewClient()

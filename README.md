@@ -8,7 +8,7 @@ Web框架: gin
 
 Logger: logrus
 
-
+cache:  go-cache
 
 ### 接口文档
 
@@ -23,10 +23,20 @@ Base:
   RunMode: "debug"
   HttpPort: 1926
 
+App:
+  AppID: "id"
+  AppSecret: "pwd"
+
+  ManagerID: "3210100000"
+	KeyWord:   "借用物品"
+	MAX_MONEY: 100.0
+
+
+
 Mongo: 
-  User: "user"
-  Pwd: "password"
-  Host: "host"
+  User: "admin"
+  Pwd: "123456"
+  Host: "localhost"
   Port: 27017
   DBName: "goodsman"
 

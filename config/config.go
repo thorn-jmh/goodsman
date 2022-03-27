@@ -7,6 +7,7 @@ import (
 
 var (
 	Base  Basecfg
+	App   Appcfg
 	Mongo DBcfg
 )
 
@@ -22,4 +23,5 @@ func InitConfig() {
 	}
 	Base = cfg.Base
 	Mongo = cfg.Mongo
+	App = cfg.App
 }
