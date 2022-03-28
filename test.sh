@@ -64,3 +64,14 @@ curl -X POST "http://{url}:1926/api/users/return_goods/all" -H "Content-Type: ap
     "employee_id" : "123456",
     "goods_id" : "<goods_id>"
 }'
+
+#需和前端联调部分
+#/api/users/id
+
+curl -X GET "http://127.0.0.1:1926/api/users/id" --data '{"code": <code> }'
+ 
+#/api/users/authority
+ 
+curl -X GET "http://127.0.0.1:1926/api/users/authority?employee_id=12dafadsf"
+
+#机器人部分可直接在飞书上调试

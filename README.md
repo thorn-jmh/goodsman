@@ -46,7 +46,13 @@ Mongo:
 
 
 
-项目表结构为：
+### 数据库配置
+
+数据库结构文件在./data目录下，请使用`mongorestore`进行导入
+
+数据库部署后需要在goodsman库中新建用户并添加readWrite权限，同时应该在mongoconfig中设置auth选项
+
+字段解释：
 
 ```go
 records:

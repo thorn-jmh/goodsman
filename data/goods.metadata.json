@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"goodsman.goods"},{"v":{"$numberInt":"2"},"unique":true,"key":{"goods_id":{"$numberInt":"1"}},"name":"goods_id_1","ns":"goodsman.goods"}],"uuid":"4fc2d89b68cb4245ab3a6d422379a7c6","collectionName":"goods","type":"collection"}
