@@ -11,7 +11,6 @@ import (
 	"goodsman/model"
 	"goodsman/response"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -20,17 +19,17 @@ import (
 )
 
 var MAX_MONEY = config.App.MaxMoney
+var userIDqueryTypr = "?user_id_type=user_id"
 
 //https://open.feishu.cn/open-apis/contact/v3/users/:user_id
 func queryAuth(empID string) (int, error) {
-	url := "https://open.feishu.cn/open-apis/contact/v3/users/" + empID
+	url := "https://open.feishu.cn/open-apis/contact/v3/users/" + empID + userIDqueryTypr
 	accessToken, err := feishu.TenantTokenManager.GetAccessToken()
 	if err != nil {
 		return -1, err
 	}
 
-	reqbody := `{"user_id_type":"user_id"}`
-	req, _ := http.NewRequest("GET", url, strings.NewReader(reqbody))
+	req, _ := http.NewRequest("GET", url, nil)
 	body, err := feishu.CommonClient.Do(req, accessToken)
 	if err != nil {
 		return -1, err

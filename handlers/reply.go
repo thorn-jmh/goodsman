@@ -10,6 +10,7 @@ import (
 	"goodsman/model"
 	"goodsman/response"
 	"io/ioutil"
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -20,6 +21,18 @@ import (
 var KeyWord = config.App.KeyWord
 
 func ReplyCheck(c *gin.Context) {
+	firstPost := model.FirstPost{}
+	if err := c.BindJSON(&firstPost); err == nil {
+		rep := struct {
+			Clg string `json:"challenge"`
+		}{
+			Clg: firstPost.Clg,
+		}
+		fmt.Print(firstPost)
+		c.JSON(http.StatusOK, &rep)
+		return
+	}
+
 	eventreq := model.CommonEvent{}
 	body, _ := ioutil.ReadAll(c.Request.Body)
 	err := json.Unmarshal(body, &eventreq)

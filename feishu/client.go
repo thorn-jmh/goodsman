@@ -45,9 +45,8 @@ func (client *FeishuClient) Do(req *http.Request, accessToken ...string) ([]byte
 	}
 	defer response.Body.Close()
 
-	if response.StatusCode != http.StatusOK {
-		logrus.Error("response status: %d", response.StatusCode)
-	}
+	//返回错误
+	//有可能是飞书返回的错误码，也可能是http错误码
 
 	result := struct {
 		Code int    `json:"code"`
@@ -58,6 +57,11 @@ func (client *FeishuClient) Do(req *http.Request, accessToken ...string) ([]byte
 		if result.Code != 0 {
 			return nil, errors.New(result.Msg)
 		}
+	}
+
+	if response.StatusCode != http.StatusOK {
+		logrus.Error("response status: ", response.StatusCode)
+		return nil, errors.New("request failed")
 	}
 
 	return resp, nil

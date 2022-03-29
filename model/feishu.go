@@ -4,6 +4,7 @@ package model
 type CommonEvent struct {
 	Header struct {
 		EventType string `json:"event_type"`
+		Token     string `json:"token"`
 	} `json:"header"`
 
 	Event struct {
@@ -13,6 +14,12 @@ type CommonEvent struct {
 			} `json:"sender_id"`
 		} `json:"sender"`
 	} `json:"event"`
+}
+
+type FirstPost struct {
+	Clg   string `json:"challenge"`
+	Token string `json:"token"`
+	Type  string `json:"type"`
 }
 
 type EventContent struct {
