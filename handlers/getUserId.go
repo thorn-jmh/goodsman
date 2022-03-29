@@ -17,12 +17,13 @@ func GetUserId(c *gin.Context) {
 	url := "https://open.feishu.cn/open-apis/mina/v2/tokenLoginValidate"
 	getIDreq := model.GetUserIDRequest{}
 
-	if err := c.BindJSON(&getIDreq); err != nil {
-		logrus.Error("failed to binding params & ", err.Error())
+	code := c.DefaultQuery("code", "nil")
+	if code == "nil" {
+		logrus.Error("failed to parse 'code'")
 		response.Error(c, response.PARAMS_ERROR)
 		return
 	}
-
+	getIDreq.Code = code
 	apptoken, err := feishu.AppTokenManager.GetAccessToken()
 	if err != nil {
 		logrus.Error("failed to get access_token & ", err.Error())

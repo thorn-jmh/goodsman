@@ -51,7 +51,7 @@ func queryAuth(empID string) (int, error) {
 func GetUserAuth(c *gin.Context) {
 	empID := c.DefaultQuery("employee_id", "nil")
 	if empID == "nil" {
-		logrus.Error()
+		logrus.Error("failed to parse employee_id")
 		response.Error(c, response.PARAMS_ERROR)
 		return
 	}
