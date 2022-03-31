@@ -18,7 +18,6 @@ var ManagerID = config.App.ManagerID
 
 func AddNewGoods(c *gin.Context) {
 	var req model.AddNewGoodsRequest
-
 	if err := c.Bind(&req); err != nil {
 		logrus.Error(err)
 		response.Error(c, response.PARAMS_ERROR)

@@ -23,11 +23,11 @@ curl -X POST "http://{url}:1926/api/goods/new" -H "Content-Type: application/jso
     "state": 1,
     "owner": "1919810",
     "goods_msg": {
-        "Name": "namaiwa",
-        "Type": "AOE-1",
-        "Photo": "1234567",
+        "name": "namaiwa",
+        "type": "AOE-1",
+        "photo": "1234567",
         "cost": 123.5,
-        "Consumables": 0
+        "consumables": 0
     }
 }'
 
@@ -37,8 +37,8 @@ curl -X POST "http://{url}:1926/api/goods/state" -H "Content-Type: application/j
     "employee_id": "123456",
     "goods_id" :"<goods_id>",
     "goods_state": {
-        "State": 0,
-        "Number": 1
+        "state": 0,
+        "number": 1
     }
 }'
 

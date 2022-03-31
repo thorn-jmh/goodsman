@@ -19,9 +19,9 @@ type ChangeGoodsStateRequest struct {
 
 type AddNewGoodsRequest struct {
 	EmployeeId string   `form:"employee_id" json:"employee_id" binding:"required"`
-	Number     int      `form:"number" json:"number" binding:"required"`
-	GoodsAuth  int      `form:"goods_authority" json:"goods_authority" binding:"required"`
-	State      int      `form:"state" json:"state" binding:"required"`
+	Number     int      `form:"number" json:"number"`
+	GoodsAuth  int      `form:"goods_authority" json:"goods_authority"`
+	State      int      `form:"state" json:"state"`
 	Owner      string   `form:"owner" json:"owner" default:"Null"`
 	GoodsMsg   Goodsmsg `form:"goods_msg" json:"goods_msg" binding:"required"`
 }
