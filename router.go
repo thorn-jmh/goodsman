@@ -19,7 +19,7 @@ func initRouter() *gin.Engine {
 		apiGroup.POST("/goods/borrow", handler.BorrowGoods)
 		apiGroup.POST("/goods/new", handler.AddNewGoods)
 		apiGroup.POST("/goods/state", handler.ChangeGoodsState)
-		apiGroup.POST("/users/return_goods", handler.ReturnGoods)
+		// apiGroup.POST("/users/return_goods", handler.ReturnGoods) // TODO: It has bug.
 		apiGroup.POST("/users/return_goods/all", handler.ReturnAllGoods)
 	}
 	eventGroup := r.Group("/event")

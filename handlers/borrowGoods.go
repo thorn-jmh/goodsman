@@ -101,6 +101,12 @@ func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string, delN
 
 func BorrowingAuthVerification(c *gin.Context, empId, goodsId string) (bool, error) {
 	employeeAuth, err := queryAuth(empId)
+
+	// cods here are used to Test without auth v
+	// employeeAuth := 1
+	// var err error
+	// _ = err
+
 	if err != nil {
 		return false, err
 	}
