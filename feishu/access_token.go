@@ -50,13 +50,13 @@ func (slf *CommonAccessTokenManager) GetAccessToken() (string, error) {
 	defer response.Body.Close()
 
 	result := struct {
-		Code int    `json:"code"`
-		Msg  string `json:"msg"`
+		Code int    `json:"code" form:"code"`
+		Msg  string `json:"msg" form:"msg"`
 
-		AppAccessToken    string `json:"app_access_token"`
-		TenantAccessToken string `json:"tenant_access_token"`
+		AppAccessToken    string `json:"app_access_token" form:"app_access_token"`
+		TenantAccessToken string `json:"tenant_access_token" form:"tenant_access_token"`
 
-		ExpireTime int `json:"expire"`
+		ExpireTime int `json:"expire" form:"expire"`
 	}{}
 
 	err = json.Unmarshal(resp, &result)

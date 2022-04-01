@@ -19,11 +19,11 @@ import (
 )
 
 var MAX_MONEY = config.App.MaxMoney
-var userIDqueryTypr = "?user_id_type=user_id"
+var userIDqueryType = "?user_id_type=user_id"
 
 //https://open.feishu.cn/open-apis/contact/v3/users/:user_id
 func queryAuth(empID string) (int, error) {
-	url := "https://open.feishu.cn/open-apis/contact/v3/users/" + empID + userIDqueryTypr
+	url := "https://open.feishu.cn/open-apis/contact/v3/users/" + empID + userIDqueryType
 	accessToken, err := feishu.TenantTokenManager.GetAccessToken()
 	if err != nil {
 		return -1, err
