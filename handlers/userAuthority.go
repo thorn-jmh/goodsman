@@ -22,29 +22,29 @@ var MAX_MONEY = config.App.MaxMoney
 var userIDqueryType = "?user_id_type=user_id"
 
 //https://open.feishu.cn/open-apis/contact/v3/users/:user_id
-func queryAuth(empID string) (int, error) {
+func queryAuth(empID string) (string, int, error) {
 	url := "https://open.feishu.cn/open-apis/contact/v3/users/" + empID + userIDqueryType
 	accessToken, err := feishu.TenantTokenManager.GetAccessToken()
 	if err != nil {
-		return -1, err
+		return "", -1, err
 	}
 
 	req, _ := http.NewRequest("GET", url, nil)
 	body, err := feishu.CommonClient.Do(req, accessToken)
 	if err != nil {
-		return -1, err
+		return "", -1, err
 	}
 	result := model.FSUserAuth{}
 	err = json.Unmarshal(body, &result)
 	if err != nil {
-		return -1, err
+		return "", -1, err
 	}
 
 	emp_type := 2 - result.Data.User.EmpType
 	if emp_type != 0 && emp_type != 1 {
-		return -1, errors.New("cant find this employee in feishu")
+		return "", -1, errors.New("cant find this employee in feishu")
 	}
-	return emp_type, nil
+	return result.Data.User.Name, emp_type, nil
 }
 
 func GetUserAuth(c *gin.Context) {
@@ -89,7 +89,7 @@ func GetUserAuth(c *gin.Context) {
 	}
 	resp.Money = float64(MAX_MONEY) - resp.Money
 
-	resp.Authority, err = queryAuth(empID)
+	resp.Name, resp.Authority, err = queryAuth(empID)
 	if err != nil {
 		logrus.Error("error happened when querying user authority & ", err.Error())
 		response.Error(c, response.FEISHU_ERROR)
@@ -97,4 +97,11 @@ func GetUserAuth(c *gin.Context) {
 	}
 
 	response.Success(c, resp)
+}
+
+func changeAuthCheck(empID string) bool {
+	if empID == config.App.ManagerID {
+		return true
+	}
+	return false
 }

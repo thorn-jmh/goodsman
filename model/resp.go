@@ -9,6 +9,7 @@ type GetGoodsMsgResp struct {
 }
 
 type UserAuthResp struct {
+	Name      string  `json:"name"`
 	Authority int     `json:"authority"`
 	Money     float64 `json:"money"`
 }

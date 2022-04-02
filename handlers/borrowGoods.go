@@ -93,20 +93,14 @@ func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string, delN
 		Del_num:     delNum, // It should be negative
 	}
 	borrowRecord, err := db.MongoDB.RecordsColl.InsertOne(ctx, record)
-
+	//TODO: err?
 	logrus.Info(updateResult)
 	logrus.Info(borrowRecord)
 	return nil
 }
 
 func BorrowingAuthVerification(c *gin.Context, empId, goodsId string) (bool, error) {
-	employeeAuth, err := queryAuth(empId)
-
-	// cods here are used to Test without auth v
-	// employeeAuth := 1
-	// var err error
-	// _ = err
-
+	_, employeeAuth, err := queryAuth(empId)
 	if err != nil {
 		return false, err
 	}

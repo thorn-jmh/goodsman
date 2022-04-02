@@ -42,7 +42,8 @@ type FSUserIDResp struct {
 type FSUserAuth struct {
 	Data struct {
 		User struct {
-			EmpType int `json:"employee_type"`
+			Name    string `json:"name"`
+			EmpType int    `json:"employee_type"`
 		} `json:"user"`
 	} `json:"data"`
 }

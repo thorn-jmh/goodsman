@@ -22,6 +22,12 @@ func ChangeGoodsState(c *gin.Context) {
 		return
 	}
 
+	if ok := changeAuthCheck(req.EmployeeId); !ok {
+		logrus.Info("permission denied")
+		response.Error(c, response.AUTH_ERROR)
+		return
+	}
+
 	err := UpdateChangeGoodsState(req.GoodsId, req.GoodsState.NewState, req.GoodsState.DelNum)
 	if err != nil {
 		logrus.Error("error happened in database & ", err.Error())
