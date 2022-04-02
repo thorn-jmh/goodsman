@@ -25,10 +25,12 @@ var msgFlags = map[int]string{
 }
 
 var httpStatus = map[int]int{
-	SUCCESS:        http.StatusOK,
-	AUTH_ERROR:     http.StatusUnauthorized,
-	PARAMS_ERROR:   http.StatusBadRequest,
-	DATABASE_ERROR: http.StatusInternalServerError,
-	STOCK_ERROR:    http.StatusInternalServerError,
-	FEISHU_ERROR:   http.StatusInternalServerError,
+	SUCCESS:           http.StatusOK,
+	AUTH_ERROR:        http.StatusUnauthorized,
+	NO_CERTAIN_GOODS:  http.StatusBadRequest,
+	PARAMS_ERROR:      http.StatusBadRequest,
+	DATABASE_ERROR:    http.StatusInternalServerError,
+	NO_BORROW_RECORDS: http.StatusBadRequest,
+	STOCK_ERROR:       http.StatusInternalServerError,
+	FEISHU_ERROR:      http.StatusInternalServerError,
 }
