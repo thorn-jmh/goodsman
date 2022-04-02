@@ -96,5 +96,6 @@ func DefaultRefreshFunc(url string) *http.Request {
 	if req.Header.Get("Content-Type") == "" {
 		req.Header.Set("Content-Type", Content_Type)
 	}
+	req.Header.Set("User-Agent", "goodsman")
 	return req
 }
