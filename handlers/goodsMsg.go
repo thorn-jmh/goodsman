@@ -16,7 +16,7 @@ func GetGoodsMsg(c *gin.Context) {
 	goodsID := c.DefaultQuery("goods_id", "nil")
 	if goodsID == "nil" {
 		logrus.Error("can't parse goods_id")
-		response.Error(c, response.PARAMS_ERROR)
+		response.Error(c, response.NO_CERTAIN_GOODS)
 		return
 	}
 	var goods model.Goods

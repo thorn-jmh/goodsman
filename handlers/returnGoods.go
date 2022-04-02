@@ -15,7 +15,6 @@ func ReturnAllGoods(c *gin.Context) {
 	var req model.ReturnAllGoodsRequest
 
 	if err := c.Bind(&req); err != nil {
-		logrus.Error(err)
 		response.Error(c, response.PARAMS_ERROR)
 		return
 	}
@@ -25,7 +24,7 @@ func ReturnAllGoods(c *gin.Context) {
 
 	if record.State == 1 {
 		logrus.Error("employee haven't borrow this")
-		response.Error(c, response.DATABASE_ERROR)
+		response.Error(c, response.NO_BORROW_RECORDS)
 		return
 	}
 
