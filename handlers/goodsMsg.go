@@ -16,7 +16,7 @@ func GetGoodsMsg(c *gin.Context) {
 	goodsID := c.DefaultQuery("goods_id", "nil")
 	if goodsID == "nil" {
 		logrus.Error("can't parse goods_id")
-		response.Error(c, response.NO_CERTAIN_GOODS)
+		response.Error(c, response.PARAMS_ERROR)
 		return
 	}
 	var goods model.Goods
@@ -25,7 +25,7 @@ func GetGoodsMsg(c *gin.Context) {
 	err := db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&goods)
 	if err != nil {
 		logrus.Error("error happened in database & ", err.Error())
-		response.Error(c, response.DATABASE_ERROR)
+		response.Error(c, response.NO_CERTAIN_GOODS)
 		return
 	}
 	resp := model.GetGoodsMsgResp{
