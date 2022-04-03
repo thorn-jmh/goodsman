@@ -68,19 +68,21 @@ func UpdateChangeGoodsState(goodsId string, goodsState int, delNum int) error {
 
 //变更物品提醒
 func changeNotify(newgoods *model.Goods) error {
-	userID := ManagerID
-	messages := make([]string, 0)
-	messages = append(messages, "物品变更提醒:")
-	messages = append(messages,
-		fmt.Sprintf("Name: %s Type: %s", newgoods.Goods_msg.Name, newgoods.Goods_msg.Type))
-	messages = append(messages,
-		fmt.Sprintf("ChangeNum: %d State: %d", newgoods.Number, newgoods.State))
+	for i, userID := range ManagerID {
+		messages := make([]string, 0)
+		messages = append(messages, "物品变更提醒:")
+		messages = append(messages,
+			fmt.Sprintf("Name: %s Type: %s", newgoods.Goods_msg.Name, newgoods.Goods_msg.Type))
+		messages = append(messages,
+			fmt.Sprintf("ChangeNum: %d State: %d", newgoods.Number, newgoods.State))
 
-	formMsg := &feishu.TextMsg{}
-	formMsg.Content = formMsg.NewMsg(messages).(string)
-	err := feishu.SendMessage(userID, "text", formMsg)
-	if err != nil {
-		return err
+		formMsg := &feishu.TextMsg{}
+		formMsg.Content = formMsg.NewMsg(messages).(string)
+		err := feishu.SendMessage(userID, "text", formMsg)
+		if err != nil {
+			return err
+		}
+		logrus.Info(i+1, "notification has been sent to manager")
 	}
 	logrus.Info("Notification has been sent to manager")
 	return nil

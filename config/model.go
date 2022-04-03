@@ -8,7 +8,7 @@ type Basecfg struct {
 type Appcfg struct {
 	AppID     string
 	AppSecret string
-	ManagerID string
+	ManagerID []string
 	MaxMoney  float64
 	KeyWord   string
 }

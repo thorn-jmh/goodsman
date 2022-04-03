@@ -6,7 +6,7 @@ App:
   AppID: "id"
   AppSecret: "pwd"
 
-  ManagerID: "3210100000"
+  ManagerID: ["3210100000","3200100000"]
 	KeyWord:   "借用物品"
 	MAX_MONEY: 100.0
 

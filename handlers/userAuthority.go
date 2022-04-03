@@ -100,8 +100,10 @@ func GetUserAuth(c *gin.Context) {
 }
 
 func changeAuthCheck(empID string) bool {
-	if empID == config.App.ManagerID {
-		return true
+	for _, item := range config.App.ManagerID {
+		if empID == item {
+			return true
+		}
 	}
 	return false
 }

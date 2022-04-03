@@ -70,20 +70,22 @@ func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 
 //新增物品提醒
 func newNotify(newgoods *model.Goods) error {
-	userID := ManagerID
-	messages := make([]string, 0)
-	messages = append(messages, "新增物品提醒:")
-	messages = append(messages,
-		fmt.Sprintf("Name: %s Type: %s", newgoods.Goods_msg.Name, newgoods.Goods_msg.Type))
-	messages = append(messages,
-		fmt.Sprintf("Num: %d Auth: %d", newgoods.Number, newgoods.Goods_auth))
+	for i, userID := range ManagerID {
+		messages := make([]string, 0)
+		messages = append(messages, "新增物品提醒:")
+		messages = append(messages,
+			fmt.Sprintf("Name: %s Type: %s", newgoods.Goods_msg.Name, newgoods.Goods_msg.Type))
+		messages = append(messages,
+			fmt.Sprintf("Num: %d Auth: %d", newgoods.Number, newgoods.Goods_auth))
 
-	formMsg := &feishu.TextMsg{}
-	formMsg.Content = formMsg.NewMsg(messages).(string)
-	err := feishu.SendMessage(userID, "text", formMsg)
-	if err != nil {
-		return err
+		formMsg := &feishu.TextMsg{}
+		formMsg.Content = formMsg.NewMsg(messages).(string)
+		err := feishu.SendMessage(userID, "text", formMsg)
+		if err != nil {
+			return err
+		}
+		logrus.Info(i+1, "notification has been sent to manager")
 	}
-	logrus.Info("Notification has been sent to manager")
+	logrus.Info("All notification has been sent to manager")
 	return nil
 }
