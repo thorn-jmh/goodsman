@@ -33,6 +33,7 @@ func (client *FeishuClient) Do(req *http.Request, accessToken ...string) ([]byte
 		req.Header.Set("Authorization", "Bearer "+token)
 	}
 	req.Header.Set("User-Agent", "goodsman")
+	req.Header.Set("Host", "open.feishu.cn")
 
 	response, err := client.HttpClient.Do(req)
 	if err != nil {

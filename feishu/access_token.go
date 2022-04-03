@@ -16,18 +16,22 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type Refresher func(string) *http.Request
+
 func DefaultAccessTokenManager(tokentype string, url string) *CommonAccessTokenManager {
 	return &CommonAccessTokenManager{
 		Token_type: tokentype,
+		Url:        url,
 		Cache:      cache.New(2*time.Hour, 12*time.Hour),
-		Refresher:  DefaultRefreshFunc(url),
+		Refresher:  DefaultRefreshFunc,
 	}
 }
 
 type CommonAccessTokenManager struct {
 	Token_type string //token类型
+	Url        string //获取途径
 	Cache      *cache.Cache
-	Refresher  *http.Request
+	Refresher  Refresher
 }
 
 func (slf *CommonAccessTokenManager) GetAccessToken() (string, error) {
@@ -38,7 +42,7 @@ func (slf *CommonAccessTokenManager) GetAccessToken() (string, error) {
 	}
 
 	logrus.Info("Requesting access_token from feishu")
-	response, err := http.DefaultClient.Do(slf.Refresher)
+	response, err := http.DefaultClient.Do(slf.Refresher(slf.Url))
 	if err != nil {
 		return "", err
 	}
@@ -97,5 +101,8 @@ func DefaultRefreshFunc(url string) *http.Request {
 		req.Header.Set("Content-Type", Content_Type)
 	}
 	req.Header.Set("User-Agent", "goodsman")
+	req.Header.Set("Host", "open.feishu.cn")
+	// req.Header.Set("Content-Length", fmt.Sprintf("%d", len(content)))
+	req.Header.Set("Content-Length", "95")
 	return req
 }
