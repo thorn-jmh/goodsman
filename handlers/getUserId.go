@@ -35,7 +35,8 @@ func GetUserId(c *gin.Context) {
 	req, _ := http.NewRequest("POST", url, bytes.NewReader(content))
 	resp, err := feishu.CommonClient.Do(req, apptoken)
 
-	if err.Error() == "app access token auth failed" {
+	if err != nil && err.Error() == "app access token auth failed" {
+		// if err != nil {
 		apptoken, err = feishu.TenantTokenManager.GetNewAccessToken()
 		if err != nil {
 			logrus.Error("failed to get access_token & ", err.Error())
