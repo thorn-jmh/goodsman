@@ -6,11 +6,11 @@ type Basecfg struct {
 }
 
 type Appcfg struct {
-	AppID     string
-	AppSecret string
-	ManagerID []string
-	MaxMoney  float64
-	KeyWord   string
+	AppID           string
+	AppSecret       string
+	AddManagerToken string
+	MaxMoney        float64
+	KeyWord         string
 }
 
 type DBcfg struct {

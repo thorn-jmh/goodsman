@@ -10,6 +10,7 @@ import (
 type Mongodb struct {
 	RecordsColl *mongo.Collection
 	GoodsColl   *mongo.Collection
+	ManagerColl *mongo.Collection
 }
 
 var (
@@ -24,6 +25,7 @@ func Init() {
 	}
 	MongoDB.GoodsColl = MongoClient.Collection("goods")
 	MongoDB.RecordsColl = MongoClient.Collection("records")
+	MongoDB.ManagerColl = MongoClient.Collection("manager")
 
 	logrus.Info("all databases connected")
 }

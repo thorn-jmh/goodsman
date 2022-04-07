@@ -40,3 +40,9 @@ type ReturnGoodsRequest struct {
 type GetUserIDRequest struct {
 	Code string `json:"code" binding:"required"`
 }
+
+type ModifyManagerRequest struct {
+	EmployeeId string `json:"employee_id" binding:"required"`
+	Name       string `json:"name"`
+	Token      string `json:"token"`
+}

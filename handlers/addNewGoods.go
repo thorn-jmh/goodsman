@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"fmt"
-	"goodsman/config"
 	"goodsman/db"
 	"goodsman/feishu"
 	"goodsman/model"
@@ -13,8 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
-
-var ManagerID = config.App.ManagerID
 
 func AddNewGoods(c *gin.Context) {
 	var req model.AddNewGoodsRequest
@@ -61,15 +58,16 @@ func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 	}
 	logrus.Info(createResult)
 
-	if err = newNotify(newGoods); err != nil {
-		logrus.Error("failed to send notification & ", err.Error())
-	}
-
+	newNotify(newGoods)
 	return newUID, nil
 }
 
 //新增物品提醒
-func newNotify(newgoods *model.Goods) error {
+func newNotify(newgoods *model.Goods) {
+	ManagerID, err := QueryManagers()
+	if err != nil {
+		logrus.Error("failed to get managers & ", err.Error())
+	}
 	for i, userID := range ManagerID {
 		messages := make([]string, 0)
 		messages = append(messages, "新增物品提醒:")
@@ -80,12 +78,12 @@ func newNotify(newgoods *model.Goods) error {
 
 		formMsg := &feishu.TextMsg{}
 		formMsg.Content = formMsg.NewMsg(messages).(string)
-		err := feishu.SendMessage(userID, "text", formMsg)
+		err = feishu.SendMessage(userID, "text", formMsg)
 		if err != nil {
-			return err
+			logrus.Error("an error happened when sending message & ", err.Error())
+		} else {
+			logrus.Info(i+1, "notification has been sent to manager")
 		}
-		logrus.Info(i+1, "notification has been sent to manager")
 	}
 	logrus.Info("All notification has been sent to manager")
-	return nil
 }

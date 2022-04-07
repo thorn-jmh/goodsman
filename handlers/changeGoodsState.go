@@ -59,15 +59,18 @@ func UpdateChangeGoodsState(goodsId string, goodsState int, delNum int) error {
 	rec := model.Goods{}
 	db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&rec)
 	rec.Number = delNum
-	if err = changeNotify(&rec); err != nil {
-		logrus.Error("failed to send notification & ", err.Error())
-	}
 
+	changeNotify(&rec)
 	return nil
 }
 
 //变更物品提醒
-func changeNotify(newgoods *model.Goods) error {
+func changeNotify(newgoods *model.Goods) {
+	ManagerID, err := QueryManagers()
+	if err != nil {
+		logrus.Error("failed to get managers & ", err.Error())
+	}
+
 	for i, userID := range ManagerID {
 		messages := make([]string, 0)
 		messages = append(messages, "物品变更提醒:")
@@ -80,10 +83,11 @@ func changeNotify(newgoods *model.Goods) error {
 		formMsg.Content = formMsg.NewMsg(messages).(string)
 		err := feishu.SendMessage(userID, "text", formMsg)
 		if err != nil {
-			return err
+			logrus.Error("an error happened when sending message & ", err.Error())
+		} else {
+			logrus.Info(i+1, "notification has been sent to manager")
 		}
-		logrus.Info(i+1, "notification has been sent to manager")
 	}
 	logrus.Info("Notification has been sent to manager")
-	return nil
+
 }

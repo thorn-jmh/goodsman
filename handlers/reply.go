@@ -18,8 +18,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-var KeyWord = config.App.KeyWord
-
 func ReplyCheck(c *gin.Context) {
 	firstPost := model.FirstPost{}
 	if err := c.BindJSON(&firstPost); err == nil {
@@ -53,7 +51,7 @@ func ReplyCheck(c *gin.Context) {
 		}
 		txt := text.Event.Message.Content
 
-		if strings.Contains(txt, KeyWord) {
+		if strings.Contains(txt, config.App.KeyWord) {
 			Reply(c, userID)
 		} else {
 			Hello(c, userID)

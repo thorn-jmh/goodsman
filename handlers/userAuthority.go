@@ -18,7 +18,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-var MAX_MONEY = config.App.MaxMoney
 var userIDqueryType = "?user_id_type=user_id"
 
 //https://open.feishu.cn/open-apis/contact/v3/users/:user_id
@@ -97,7 +96,7 @@ func GetUserAuth(c *gin.Context) {
 		}
 		resp.Money += goods.Goods_msg.Cost
 	}
-	resp.Money = float64(MAX_MONEY) - resp.Money
+	resp.Money = float64(config.App.MaxMoney) - resp.Money
 
 	resp.Name, resp.Authority, err = queryAuth(empID)
 	if err != nil {
@@ -110,7 +109,11 @@ func GetUserAuth(c *gin.Context) {
 }
 
 func changeAuthCheck(empID string) bool {
-	for _, item := range config.App.ManagerID {
+	ManagerID, err := QueryManagers()
+	if err != nil {
+		logrus.Error("failed to get managers & ", err.Error())
+	}
+	for _, item := range ManagerID {
 		if empID == item {
 			return true
 		}
