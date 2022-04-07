@@ -25,7 +25,7 @@ func AddNewGoods(c *gin.Context) {
 	}
 
 	if ok := changeAuthCheck(req.EmployeeId); !ok {
-		logrus.Info("permission denied")
+		logrus.Error("permission denied")
 		response.Error(c, response.AUTH_ERROR)
 		return
 	}
