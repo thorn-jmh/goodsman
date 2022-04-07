@@ -31,6 +31,16 @@ func SendMessage(empID string, msg_type string, content MsgContent) error {
 	reqbody, _ := json.Marshal(msg)
 	req, _ := http.NewRequest("POST", url, bytes.NewReader(reqbody))
 	resp, err := CommonClient.Do(req, accessToken)
+	if err.Error() == "app access token auth failed" {
+		accessToken, err = TenantTokenManager.GetNewAccessToken()
+		if err != nil {
+			return err
+		}
+		reqbody, _ = json.Marshal(msg)
+		req, _ = http.NewRequest("POST", url, bytes.NewReader(reqbody))
+		resp, err = CommonClient.Do(req, accessToken)
+	}
+
 	if err != nil {
 		return err
 	}

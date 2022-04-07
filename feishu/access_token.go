@@ -39,8 +39,14 @@ func (slf *CommonAccessTokenManager) GetAccessToken() (string, error) {
 	accessToken, hastoken := slf.Cache.Get(cacheKey)
 	if hastoken {
 		return accessToken.(string), nil
+	} else {
+		return slf.GetNewAccessToken()
 	}
+}
 
+func (slf *CommonAccessTokenManager) GetNewAccessToken() (string, error) {
+	cacheKey := slf.getCacheKey()
+	var accessToken interface{} //DEBUG
 	logrus.Info("Requesting access_token from feishu")
 	response, err := http.DefaultClient.Do(slf.Refresher(slf.Url))
 	if err != nil {
@@ -76,11 +82,9 @@ func (slf *CommonAccessTokenManager) GetAccessToken() (string, error) {
 		return "", errors.New("no access_token response in response body")
 	}
 
-	err = slf.Cache.Add(cacheKey, accessToken, time.Minute*time.Duration(TokenExpireTime))
-	if err != nil {
-		logrus.Error("failed to add token to cache & ", err.Error())
-	}
-
+	expireTime := time.Duration(result.ExpireTime - 600)
+	slf.Cache.Set(cacheKey, accessToken, time.Second*expireTime)
+	logrus.Info("added token to cache & expiretime=", time.Second*expireTime)
 	return accessToken.(string), nil
 }
 

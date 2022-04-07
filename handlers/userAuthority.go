@@ -31,6 +31,16 @@ func queryAuth(empID string) (string, int, error) {
 
 	req, _ := http.NewRequest("GET", url, nil)
 	body, err := feishu.CommonClient.Do(req, accessToken)
+
+	if err.Error() == "app access token auth failed" {
+		accessToken, err = feishu.TenantTokenManager.GetNewAccessToken()
+		if err != nil {
+			return "", -1, err
+		}
+		req, _ = http.NewRequest("GET", url, nil)
+		body, err = feishu.CommonClient.Do(req, accessToken)
+	}
+
 	if err != nil {
 		return "", -1, err
 	}

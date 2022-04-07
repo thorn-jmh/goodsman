@@ -10,10 +10,9 @@ var (
 	AppID     string
 	AppSecret string
 
-	TokenExpireTime = 110
-	Content_Type    = "application/json; charset=utf-8"
-	ReplyEvent      = "im.message.receive_v1"
-	HelloEvent      = "event_callback"
+	Content_Type = "application/json; charset=utf-8"
+	ReplyEvent   = "im.message.receive_v1"
+	HelloEvent   = "event_callback"
 )
 
 var (
