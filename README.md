@@ -26,12 +26,9 @@ Base:
 App:
   AppID: "id"
   AppSecret: "pwd"
-
-  ManagerID: "3210100000"
-  KeyWord:   "借用物品"
+  AddManagerToken: "qaqaqaq"
+  KeyWord: "借用物品"
   MaxMoney: 100.0
-
-
 
 Mongo: 
   User: "admin"
@@ -71,6 +68,7 @@ goods:
   number:	   int	   #库存数量
   state:	   int     #物品状态 0：不在库，1：正常，2：报修，3：报损
   owner:	   string  #目前所有者(employee_id)
+  owner_name:  string  #所有者姓名
   goods_msg:
     name:	   string  #名称
     type:	   string  #型号
@@ -78,6 +76,12 @@ goods:
     cost:	   float64 #金额
     consumables:  int  #是否为耗材,0：不是，1：是
 index{goods_id : 1,unique}
+
+manager:
+  employee_id:  string
+  name:         string
+  auth:         int      权限，0，未获得权限，1，普通管理员，2，超级管理员
+  
   
  
 ```
