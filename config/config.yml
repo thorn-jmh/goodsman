@@ -5,10 +5,9 @@ Base:
 App:
   AppID: "id"
   AppSecret: "pwd"
-
   AddManagerToken: "qaqaqaq"
-	KeyWord:   "借用物品"
-	MAX_MONEY: 100.0
+  KeyWord: "借用物品"
+  MaxMoney: 100.0
 
 Mongo: 
   User: "admin"

@@ -29,7 +29,7 @@ App:
 
   ManagerID: "3210100000"
   KeyWord:   "借用物品"
-  MAX_MONEY: 100.0
+  MaxMoney: 100.0
 
 
 

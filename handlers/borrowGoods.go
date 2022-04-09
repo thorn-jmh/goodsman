@@ -94,6 +94,9 @@ func UpdateBorrowGoods(goodsId string, restGoodsNum int, employeeId string, delN
 	}
 	borrowRecord, err := db.MongoDB.RecordsColl.InsertOne(ctx, record)
 	//TODO: err?
+	if err != nil {
+		return err
+	}
 	logrus.Info(updateResult)
 	logrus.Info(borrowRecord)
 	return nil

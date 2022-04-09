@@ -65,6 +65,7 @@ func GetUserAuth(c *gin.Context) {
 	}
 	resp := model.UserAuthResp{}
 
+	// ====================
 	year, month, day := time.Now().Local().Date()
 	date, _ := time.Parse("2006-01-02 15:04:05",
 		fmt.Sprintf("%d-%02d-%02d 00:00:00", year, month, day))

@@ -9,8 +9,8 @@ type Appcfg struct {
 	AppID           string
 	AppSecret       string
 	AddManagerToken string
-	MaxMoney        float64
 	KeyWord         string
+	MaxMoney        float64
 }
 
 type DBcfg struct {

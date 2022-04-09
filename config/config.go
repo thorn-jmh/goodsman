@@ -24,4 +24,7 @@ func InitConfig() {
 	Base = cfg.Base
 	Mongo = cfg.Mongo
 	App = cfg.App
+	logrus.Info("here is the config")
+	logrus.Info(cfg)
+	logrus.Info("ok")
 }
