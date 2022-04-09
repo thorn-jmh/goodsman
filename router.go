@@ -24,6 +24,9 @@ func initRouter() *gin.Engine {
 
 		apiGroup.POST("/users/add/manager", handler.AddManager)
 		apiGroup.POST("/users/del/manager", handler.DeleteManager)
+
+		apiGroup.GET("/admin/qry/managers", handler.GetManagersByAuth)
+		apiGroup.POST("/admin/upd/managers", handler.UpdateManagerAuthByEid)
 	}
 	eventGroup := r.Group("/event")
 	{

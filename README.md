@@ -80,7 +80,7 @@ index{goods_id : 1,unique}
 manager:
   employee_id:  string
   name:         string
-  auth:         int      权限，0，未获得权限，1，普通管理员，2，超级管理员
+  auth:         int      权限，-1，未获得权限，1，普通管理员，2，超级管理员
   
   
  

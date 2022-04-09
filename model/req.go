@@ -46,3 +46,9 @@ type ModifyManagerRequest struct {
 	Name       string `json:"name"`
 	Token      string `json:"token"`
 }
+
+type ChangeManagerStateRequest struct {
+	SuperEid   string `json:"super_admin" binding:"required"`
+	ManagerEid string `json:"employee_id" binding:"required"`
+	NewAuth    int    `json:"new_auth" binding:"required"`
+}
