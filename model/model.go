@@ -27,7 +27,8 @@ type Records struct {
 }
 
 type Manager struct {
-	Employee_id string `bson:"employee_id"`
-	Name        string `bson:"name"`
-	Auth        int    `bson:"auth"`
+	Employee_id string  `bson:"employee_id"`
+	Name        string  `bson:"name"`
+	Auth        int     `bson:"auth"`
+	MaxMoney    float64 `bson:"money"`
 }
