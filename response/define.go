@@ -5,6 +5,7 @@ import "net/http"
 var (
 	SUCCESS           int = 0   //Success
 	AUTH_ERROR        int = -1  //用户权限不足
+	REST_MONEY_ERROR  int = -2  //用户余额不足
 	NO_CERTAIN_GOODS  int = -10 // 不存在该物品
 	PARAMS_ERROR      int = -11 //传入参数错误
 	DATABASE_ERROR    int = 1   //数据库错误
@@ -16,6 +17,7 @@ var (
 var msgFlags = map[int]string{
 	SUCCESS:           "Success",
 	AUTH_ERROR:        "用户权限不足",
+	REST_MONEY_ERROR:  "用户余额不足",
 	NO_CERTAIN_GOODS:  "不存在该物品",
 	PARAMS_ERROR:      "传入参数错误",
 	DATABASE_ERROR:    "数据库错误",
@@ -27,6 +29,7 @@ var msgFlags = map[int]string{
 var httpStatus = map[int]int{
 	SUCCESS:           http.StatusOK,
 	AUTH_ERROR:        http.StatusUnauthorized,
+	REST_MONEY_ERROR:  http.StatusUnauthorized,
 	NO_CERTAIN_GOODS:  http.StatusBadRequest,
 	PARAMS_ERROR:      http.StatusBadRequest,
 	DATABASE_ERROR:    http.StatusInternalServerError,

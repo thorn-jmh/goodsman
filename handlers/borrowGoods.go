@@ -51,6 +51,24 @@ func BorrowGoods(c *gin.Context) {
 		return
 	}
 
+	restMoney, err := queryRestMoney(req.EmployeeId)
+	if err != nil {
+		logrus.Error("error happened when querying user restmoney & ", err.Error())
+		response.Error(c, response.DATABASE_ERROR)
+		return
+	}
+	totCost, err := calTotalCost(req.GoodsId, req.GoodsNum)
+	if err != nil {
+		logrus.Error("error happend when query total cost of the goods", err.Error())
+		response.Error(c, response.DATABASE_ERROR)
+		return
+	}
+	if restMoney < totCost {
+		logrus.Error("rest money of employee is not enough")
+		response.Error(c, response.REST_MONEY_ERROR)
+		return
+	}
+
 	// TODO: remove delnum or restnum
 	err = UpdateBorrowGoods(req.GoodsId, restGoodsNum, req.EmployeeId, -req.GoodsNum)
 	if err != nil {

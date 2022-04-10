@@ -48,3 +48,14 @@ func GoodsStockVerification(goodsId string, goodsNum int) (int, int, error) {
 	}
 	return goods.State, goods.Number - goodsNum, nil
 }
+
+func calTotalCost(goodsId string, goodsNum int) (float64, error) {
+	var goods model.Goods
+	ctx := context.TODO()
+	filter := bson.D{{"goods_id", goodsId}}
+	err := db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&goods)
+	if err != nil {
+		return 0, nil
+	}
+	return goods.Goods_msg.Cost * float64(goodsNum), nil
+}
