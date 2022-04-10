@@ -58,6 +58,10 @@ func queryAuth(empID string) (string, int, error) {
 
 func queryRestMoney(empID string) (float64, error) {
 	moneyRest := config.App.MaxMoney
+	employee, _ := queryManagerByEid(empID)
+	if employee.MaxMoney > 0 {
+		moneyRest = employee.MaxMoney
+	}
 	ctsZone := time.FixedZone("CST", 8*3600)
 	year, month, day := time.Now().In(ctsZone).Date()
 	date, _ := time.Parse("2006-01-02 15:04:05",
@@ -81,12 +85,13 @@ func queryRestMoney(empID string) (float64, error) {
 		if err != nil {
 			return 0, err
 		}
-
+		moneyRest += goods.Goods_msg.Cost * float64(rec[i].Del_num)
 	}
-	resp.Money = float64(config.App.MaxMoney) - resp.Money
+	return moneyRest, nil
 }
 
 func GetUserAuth(c *gin.Context) {
+	var err error
 	empID := c.DefaultQuery("employee_id", "nil")
 	if empID == "nil" {
 		logrus.Error("failed to parse employee_id")
@@ -101,7 +106,12 @@ func GetUserAuth(c *gin.Context) {
 		response.Error(c, response.FEISHU_ERROR)
 		return
 	}
-
+	resp.Money, err = queryRestMoney(empID)
+	if err != nil {
+		logrus.Error("error happened when querying user restmoney & ", err.Error())
+		response.Error(c, response.DATABASE_ERROR)
+		return
+	}
 	response.Success(c, resp)
 }
 
