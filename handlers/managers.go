@@ -108,18 +108,13 @@ func UpdateManagerAuthByEid(c *gin.Context) {
 		response.Error(c, response.PARAMS_ERROR)
 		return
 	}
-	superAdmin, err := queryManagerByEid(updManagerReq.SuperEid)
-	if err != nil {
-		logrus.Error("can't find the super admin", err)
-		response.Error(c, response.DATABASE_ERROR)
-		return
-	}
-	if superAdmin.Auth != 2 {
-		logrus.Error("this \"super admin\" is not real \"super admin\"")
+	isRealSuperAdmin := isSuperAdmin(updManagerReq.SuperEid)
+	if !isRealSuperAdmin {
+		logrus.Error("invalid super admin")
 		response.Error(c, response.AUTH_ERROR)
 		return
 	}
-	_, err = queryManagerByEid(updManagerReq.ManagerEid)
+	_, err := queryManagerByEid(updManagerReq.ManagerEid)
 	if err != nil {
 		logrus.Error("can't find the manager", err)
 		response.Error(c, response.DATABASE_ERROR)
@@ -128,6 +123,39 @@ func UpdateManagerAuthByEid(c *gin.Context) {
 	err = updateManagerAuthByEid(updManagerReq.ManagerEid, updManagerReq.NewAuth)
 	if err != nil {
 		logrus.Error("error happen when update manager", err)
+		response.Error(c, response.DATABASE_ERROR)
+		return
+	}
+	response.Success(c, response.Success)
+}
+
+func UpdateManagerMaxMoneyByEid(c *gin.Context) {
+	updManagerReq := model.ChangeManagerMaxMoneyRequest{}
+	if err := c.BindJSON(&updManagerReq); err != nil {
+		logrus.Error(err)
+		response.Error(c, response.PARAMS_ERROR)
+		return
+	}
+	if newMM := updManagerReq.NewMaxMoney; newMM < 0 {
+		logrus.Error("invalid new max money")
+		response.Error(c, response.PARAMS_ERROR)
+		return
+	}
+	isRealSuperAdmin := isSuperAdmin(updManagerReq.SuperEid)
+	if !isRealSuperAdmin {
+		logrus.Error("invalid super admin")
+		response.Error(c, response.AUTH_ERROR)
+		return
+	}
+	_, err := queryManagerByEid(updManagerReq.ManagerEid)
+	if err != nil {
+		logrus.Error("can't find the manager", err)
+		response.Error(c, response.DATABASE_ERROR)
+		return
+	}
+	err = updateManagerMaxMoneyByEid(updManagerReq.ManagerEid, updManagerReq.NewMaxMoney)
+	if err != nil {
+		logrus.Error("error happen when update manager's max money", err)
 		response.Error(c, response.DATABASE_ERROR)
 		return
 	}
@@ -190,6 +218,18 @@ func updateManagerAuthByEid(eid string, newAuth int) error {
 	return nil
 }
 
+func updateManagerMaxMoneyByEid(eid string, newMM int) error {
+	ctx := context.TODO()
+	filter := bson.M{"employee_id": eid}
+	update := bson.M{"$set": bson.M{"money": newMM}}
+	updresult, err := db.MongoDB.GoodsColl.UpdateOne(ctx, filter, update)
+	if err != nil {
+		return err
+	}
+	logrus.Info(updresult)
+	return nil
+}
+
 func addNewManager(newman model.Manager) error {
 	_, err := db.MongoDB.ManagerColl.InsertOne(context.TODO(), &newman)
 	return err
@@ -200,4 +240,19 @@ func delManager(empID string) error {
 	filter := bson.D{{"employee_id", empID}}
 	_, err := db.MongoDB.ManagerColl.DeleteOne(ctx, filter)
 	return err
+}
+
+func isSuperAdmin(eid string) bool {
+	superAdmin, err := queryManagerByEid(eid)
+	if err != nil {
+		logrus.Error("can't find the super admin", err)
+		// response.Error(c, response.DATABASE_ERROR)
+		return false //, err
+	}
+	if superAdmin.Auth != 2 {
+		logrus.Error("this \"super admin\" is not real \"super admin\"")
+		// response.Error(c, response.AUTH_ERROR)
+		return false //, errors.New("this \"super admin\" is not real \"super admin\"")
+	}
+	return true //, nil
 }

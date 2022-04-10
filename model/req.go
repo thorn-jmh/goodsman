@@ -52,3 +52,9 @@ type ChangeManagerStateRequest struct {
 	ManagerEid string `json:"employee_id" binding:"required"`
 	NewAuth    int    `json:"new_auth" binding:"required"`
 }
+
+type ChangeManagerMaxMoneyRequest struct {
+	SuperEid    string `json:"super_admin" binding:"required"`
+	ManagerEid  string `json:"employee_id" binding:"required"`
+	NewMaxMoney int    `json:"new_max_money" binding:"required"`
+}
