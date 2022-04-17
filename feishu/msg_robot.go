@@ -15,12 +15,12 @@ import (
 func SendMessage(empID string, msg_type string, content MsgContent) error {
 	url := "https://open.feishu.cn/open-apis/im/v1/messages" + "?receive_id_type=user_id"
 	msg := struct {
-		EmpID    string     `json:"receive_id"`
-		Content  MsgContent `json:"content"`
-		Msg_type string     `json:"msg_type"`
+		EmpID    string `json:"receive_id"`
+		Content  string `json:"content"`
+		Msg_type string `json:"msg_type"`
 	}{
 		EmpID:    empID,
-		Content:  content,
+		Content:  content.ReturnMsg(),
 		Msg_type: msg_type,
 	}
 
@@ -31,7 +31,7 @@ func SendMessage(empID string, msg_type string, content MsgContent) error {
 	reqbody, _ := json.Marshal(msg)
 	req, _ := http.NewRequest("POST", url, bytes.NewReader(reqbody))
 	resp, err := CommonClient.Do(req, accessToken)
-	if err.Error() == "app access token auth failed" {
+	if err != nil && err.Error() == "app access token auth failed" {
 		accessToken, err = TenantTokenManager.GetNewAccessToken()
 		if err != nil {
 			return err
@@ -58,6 +58,7 @@ func SendMessage(empID string, msg_type string, content MsgContent) error {
 //消息接口
 type MsgContent interface {
 	NewMsg(messages ...interface{}) interface{}
+	ReturnMsg() string
 }
 
 //文本格式消息
@@ -71,10 +72,16 @@ func (slf *TextMsg) NewMsg(messages ...interface{}) interface{} {
 	items, _ := messages[0].([]string)
 	message := "{\"text\":\" "
 	for i, item := range items {
-		message = message + item + " \\n "
-		if i == len(messages)-1 {
+		if i == len(items)-1 {
 			message = message + item + " \"}"
+		} else {
+			message = message + item + " \\n "
 		}
 	}
 	return message
+}
+
+//返回string格式消息
+func (slf *TextMsg) ReturnMsg() string {
+	return slf.Content
 }

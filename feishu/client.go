@@ -40,7 +40,7 @@ func (client *FeishuClient) Do(req *http.Request, accessToken ...string) ([]byte
 		return nil, err
 	}
 
-	resp, err := ioutil.ReadAll(response.Body)
+	resp, _ := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}

@@ -100,7 +100,7 @@ func Reply(c *gin.Context, empID string) {
 func Hello(c *gin.Context, empID string) {
 	messages := make([]string, 0)
 	messages = append(messages, "欢迎使用物资借用bot！")
-	messages = append(messages, "回复\"借用物品\"查询待归还物品")
+	messages = append(messages, "回复【借用物品】查询待还物品~")
 
 	formMsg := &feishu.TextMsg{}
 	formMsg.Content = formMsg.NewMsg(messages).(string)
