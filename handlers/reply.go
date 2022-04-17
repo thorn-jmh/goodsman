@@ -26,7 +26,7 @@ func ReplyCheck(c *gin.Context) {
 		}{
 			Clg: firstPost.Clg,
 		}
-		fmt.Print(firstPost)
+		logrus.Info("first post, data: ", firstPost)
 		c.JSON(http.StatusOK, &rep)
 		return
 	}

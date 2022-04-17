@@ -17,9 +17,9 @@ type CommonEvent struct {
 }
 
 type FirstPost struct {
-	Clg   string `json:"challenge"`
-	Token string `json:"token"`
-	Type  string `json:"type"`
+	Clg   string `json:"challenge" binding:"require"`
+	Token string `json:"token" binding:"require"`
+	Type  string `json:"type" binding:"require"`
 }
 
 type EventContent struct {
