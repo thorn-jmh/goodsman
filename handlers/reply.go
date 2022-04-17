@@ -31,7 +31,6 @@ func ReplyCheck(c *gin.Context) {
 		return
 	}
 
-	logrus.Info("not first post")
 	eventreq := model.CommonEvent{}
 	body, _ := ioutil.ReadAll(c.Request.Body)
 	err := json.Unmarshal(body, &eventreq)
