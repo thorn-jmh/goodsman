@@ -19,18 +19,6 @@ import (
 )
 
 func ReplyCheck(c *gin.Context) {
-	firstPost := model.FirstPost{}
-	if err := c.BindJSON(&firstPost); err == nil {
-		rep := struct {
-			Clg string `json:"challenge"`
-		}{
-			Clg: firstPost.Clg,
-		}
-		logrus.Info("first post, data: ", firstPost)
-		c.JSON(http.StatusOK, &rep)
-		return
-	}
-
 	eventreq := model.CommonEvent{}
 	body, _ := ioutil.ReadAll(c.Request.Body)
 	err := json.Unmarshal(body, &eventreq)
@@ -39,8 +27,18 @@ func ReplyCheck(c *gin.Context) {
 		response.Error(c, response.FEISHU_ERROR)
 		return
 	}
-	userID := eventreq.Event.Sender.Sender_id.UserID
+	if eventreq.Clg != "" && eventreq.Type != "" {
+		rep := struct {
+			Clg string `json:"challenge"`
+		}{
+			Clg: eventreq.Clg,
+		}
+		logrus.Info("first post, data: ", eventreq.Type)
+		c.JSON(http.StatusOK, &rep)
+		return
+	}
 
+	userID := eventreq.Event.Sender.Sender_id.UserID
 	if eventreq.Header.EventType == feishu.ReplyEvent {
 		text := model.EventContent{}
 		err = json.Unmarshal(body, &text)

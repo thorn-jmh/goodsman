@@ -2,6 +2,9 @@ package model
 
 //接受飞书请求的结构体,会巨丑无比
 type CommonEvent struct {
+	Clg    string `json:"challenge"`
+	Token  string `json:"token"`
+	Type   string `json:"type"`
 	Header struct {
 		EventType string `json:"event_type"`
 		Token     string `json:"token"`
@@ -14,12 +17,6 @@ type CommonEvent struct {
 			} `json:"sender_id"`
 		} `json:"sender"`
 	} `json:"event"`
-}
-
-type FirstPost struct {
-	Clg   string `json:"challenge" binding:"required"`
-	Token string `json:"token" binding:"required"`
-	Type  string `json:"type" binding:"required"`
 }
 
 type EventContent struct {
