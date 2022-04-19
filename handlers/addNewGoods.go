@@ -36,9 +36,8 @@ func AddNewGoods(c *gin.Context) {
 		return
 	}
 
-	// resp := model.AddNewGoodsResp{GoodsId: uid}
-	var resp model.AddNewGoodsResp
-	resp.GoodsId = uid
+	resp := model.AddNewGoodsResp{GoodsId: uid}
+	logrus.Info("will soon return data : ", resp)
 	response.Success(c, resp)
 	return
 }
