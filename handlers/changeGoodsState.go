@@ -60,7 +60,7 @@ func UpdateChangeGoodsState(goodsId string, goodsState int, delNum int) error {
 	db.MongoDB.GoodsColl.FindOne(ctx, filter).Decode(&rec)
 	rec.Number = delNum
 
-	changeNotify(&rec)
+	go changeNotify(&rec)
 	return nil
 }
 

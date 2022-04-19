@@ -10,12 +10,17 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/patrickmn/go-cache"
 	"github.com/sirupsen/logrus"
 )
 
+//防止同时多个请求并发冲突
+var getAccessTokenLock sync.Mutex
+
+//token刷新器
 type Refresher func(string) *http.Request
 
 func DefaultAccessTokenManager(tokentype string, url string) *CommonAccessTokenManager {
@@ -35,8 +40,20 @@ type CommonAccessTokenManager struct {
 }
 
 func (slf *CommonAccessTokenManager) GetAccessToken() (string, error) {
+	//如果缓存内有，就先获取
 	cacheKey := slf.getCacheKey()
 	accessToken, hastoken := slf.Cache.Get(cacheKey)
+	if hastoken {
+		return accessToken.(string), nil
+	}
+
+	//如果没有就去查询，防止重复查询
+	getAccessTokenLock.Lock()
+	defer getAccessTokenLock.Unlock()
+
+	//此时可能已经有进程查询到了，所以再检索一遍缓存
+	cacheKey = slf.getCacheKey()
+	accessToken, hastoken = slf.Cache.Get(cacheKey)
 	if hastoken {
 		return accessToken.(string), nil
 	} else {
