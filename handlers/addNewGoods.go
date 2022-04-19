@@ -36,10 +36,12 @@ func AddNewGoods(c *gin.Context) {
 
 	resp := model.AddNewGoodsResp{GoodsId: uid}
 	response.Success(c, resp)
+	return
 }
 
 func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 	newUID, _ := utils.GetUID()
+	logrus.Info("Generate new UID : ", newUID)
 
 	newGoods := &model.Goods{
 		Goods_id:   newUID,
