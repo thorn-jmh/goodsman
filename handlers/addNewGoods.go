@@ -28,6 +28,8 @@ func AddNewGoods(c *gin.Context) {
 	}
 
 	uid, err := CreateNewGoods(req)
+	logrus.Info("get new uid from 'CreateNewGoods()' : ", uid)
+
 	if err != nil {
 		logrus.Error("error happened in database & ", err.Error())
 		response.Error(c, response.DATABASE_ERROR)
@@ -64,7 +66,8 @@ func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 	}
 	logrus.Info(createResult)
 
-	// newNotify(newGoods)
+	newNotify(newGoods)
+
 	return newUID, nil
 }
 
