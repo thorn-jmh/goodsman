@@ -27,7 +27,7 @@ func AddNewGoods(c *gin.Context) {
 		return
 	}
 
-	uid, err := CreateNewGoods(req)
+	uid, goods, err := CreateNewGoods(req)
 	logrus.Info("get new uid from 'CreateNewGoods()' : ", uid)
 
 	if err != nil {
@@ -37,16 +37,16 @@ func AddNewGoods(c *gin.Context) {
 	}
 
 	resp := model.AddNewGoodsResp{GoodsId: uid}
-	logrus.Info("will soon return data : ", resp)
 	response.Success(c, resp)
-	return
+
+	newNotify(goods)
 }
 
-func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
+func CreateNewGoods(req model.AddNewGoodsRequest) (string, *model.Goods, error) {
 	newUID, err := utils.GetUID()
 	if err != nil {
 		logrus.Error("somthing wrong when generating new uid")
-		return "", err
+		return "", nil, err
 	}
 	logrus.Info("Generate new UID : ", newUID)
 
@@ -63,13 +63,11 @@ func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 	createResult, err := db.MongoDB.GoodsColl.InsertOne(ctx, newGoods)
 
 	if err != nil {
-		return newUID, err
+		return newUID, newGoods, err
 	}
 	logrus.Info(createResult)
 
-	newNotify(newGoods)
-
-	return newUID, nil
+	return newUID, newGoods, nil
 }
 
 //新增物品提醒
