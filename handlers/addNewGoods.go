@@ -27,8 +27,8 @@ func AddNewGoods(c *gin.Context) {
 		return
 	}
 
-	uid, goods, err := CreateNewGoods(req)
-	logrus.Info("get new uid from 'CreateNewGoods()' : ", uid)
+	uid, goods, err := createNewGoods(req)
+	logrus.Info("get new uid from 'createNewGoods()' : ", uid)
 
 	if err != nil {
 		logrus.Error("error happened in database & ", err.Error())
@@ -39,10 +39,25 @@ func AddNewGoods(c *gin.Context) {
 	resp := model.AddNewGoodsResp{GoodsId: uid}
 	response.Success(c, resp)
 
-	newNotify(goods)
+	go newNotify(goods)
 }
 
-func CreateNewGoods(req model.AddNewGoodsRequest) (string, *model.Goods, error) {
+// func NewGoodsNotify(c *gin.Context) {
+// 	uid := c.Query("uid")
+// 	ctx := context.TODO()
+// 	filter := bson.D{{"goods_id", uid}}
+// 	cursor, err := db.MongoDB.GoodsColl.Find(ctx, filter)
+// 	if err != nil {
+// 		logrus.Error("error happened in database & ", err.Error())
+// 		response.Error(c, response.DATABASE_ERROR)
+// 		return
+// 	}
+// 	var goods []model.Goods{}
+// 	cursor.All(ctx, &goods)
+
+// }
+
+func createNewGoods(req model.AddNewGoodsRequest) (string, *model.Goods, error) {
 	newUID, err := utils.GetUID()
 	if err != nil {
 		logrus.Error("somthing wrong when generating new uid")
