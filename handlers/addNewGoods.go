@@ -40,7 +40,11 @@ func AddNewGoods(c *gin.Context) {
 }
 
 func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
-	newUID, _ := utils.GetUID()
+	newUID, err := utils.GetUID()
+	if err != nil {
+		logrus.Error("somthing wrong when generating new uid")
+		return "", err
+	}
 	logrus.Info("Generate new UID : ", newUID)
 
 	newGoods := &model.Goods{
@@ -60,7 +64,7 @@ func CreateNewGoods(req model.AddNewGoodsRequest) (string, error) {
 	}
 	logrus.Info(createResult)
 
-	newNotify(newGoods)
+	// newNotify(newGoods)
 	return newUID, nil
 }
 
