@@ -36,7 +36,9 @@ func AddNewGoods(c *gin.Context) {
 		return
 	}
 
-	resp := model.AddNewGoodsResp{GoodsId: uid}
+	// resp := model.AddNewGoodsResp{GoodsId: uid}
+	var resp model.AddNewGoodsResp
+	resp.GoodsId = uid
 	response.Success(c, resp)
 	return
 }
